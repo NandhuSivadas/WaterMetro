@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 align="center">Food </h2>
+        <table border="1" align="center" cellpadding="10">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txt_name" id=""  value="{{udata.food_name}}"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><input type="text" name="txt_description" id=""  value="{{udata.food_description}}"></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td><input type="file" name="txt_file" id=""  value="{{udata.food_image}}"></td>
+            </tr>
+            <tr>
+                <td>Rate</td>
+                <td><input type="text" name="txt_rate" id=""  value="{{udata.food_rate}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit">
+                      <input type="reset" value="Cancel"></td>
+              
+            </tr>
+        </table>
+        <br><br>
+         <table border="1", align="center" cellpadding="10">
+            <tr>
+                <td>SL No</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Image</td>
+                <td>Rate</td>
+                <td>Action</td>
+            </tr>
+            {% for i in Data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.food_name}}</td>
+                <td>{{i.food_description}}</td>
+                <td><img src="{{i.food_image.url}}" alt="" width="150" height="150"></td>
+                <td>{{i.food_rate}}</td>
+                <td><a href="{% url 'webadmin:del_food' i.id %}">Delete</a> ||
+                    ||<a href="{% url 'webadmin:stock_food' i.id %}">Stock </a>
+                </td>
+            </tr>
+            {% endfor %}
+         </table>
+    </form>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post" id="UserForm" data-places-url="{% url 'webadmin:AjaxPlace' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center" border="1" cellpadding="10">
+            <h2 align="center">User registration</h2>
+            
+            <tr>
+                <td>District</td>
+                <td><select name="select" id="sel_district">
+                    <option value="">..select..</option>
+                    {% for i in Ddata %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td>
+                    <select name="sel_place" id="sel_place">
+                        <option value="">select</option>
+                        {%  for  i in data  %}
+                        <option value="{{i.id}}">{{i.Place_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txt_name" id=""></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="txt_email" id=""></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>Male<input type="radio" name="txt_gender" id="">
+                    Female<input type="radio" name="txt_gender" id=""></td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td><input type="text" name="txt_contact" id=""></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><input type="text" name="txt_address" id=""></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="txt_password" id=""></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td><input type="file" name="txt_file" id=""></td>
+            </tr>
+            <tr>
+                <td>Proof</td>
+                <td><input type="file" name="txt_proof" id=""></td>
+            </tr>
+            <tr>
+                <td><input type="submit"  name="txt_submit" value="Submit">
+                    <input type="reset"  name="txt_submit" value="Cancel">
+
+
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $("#sel_district").change(function () {
+            var did = $(this).val();
+            var ur = $("#UserForm").attr("data-places-url");
+            $.ajax({
+                url: ur,
+                data: { DIST: did, },
+                success: function (data) {
+                    $("#sel_place").html(data);
+                },
+            });
+        });
+</script>

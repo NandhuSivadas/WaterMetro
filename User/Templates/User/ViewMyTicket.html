@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table border="1" align="center">
+            <tr>
+                <td>sl no</td>
+                <td>Date</td>
+                <td>Passenger</td>
+                <td>Booked date</td>
+                <td>Boat</td>
+                <td>Amount</td>
+                <td>Service</td>
+                <td>Starttime</td>
+                <td>Arrivaltime</td>
+                <td>Ticket Type</td>
+                <td>Status</td>
+                
+            </tr>
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

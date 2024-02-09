@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table border="1" align="center" cellpadding="10">
+            <tr>
+                <td>Photo</td>
+                <td><img src="{{stationmaster.master_photo.url}}" alt="" width="150" height="150"></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{stationmaster.master_name}}</td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{stationmaster.master_contact}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{stationmaster.master_email}}</td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>{{stationmaster.master_gender}}</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{stationmaster.master_address}}</td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td>{{stationmaster.place.district.district_name}}</td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td>{{stationmaster.place.place_name}}</td>
+            </tr>
+           
+        </table>
+    </form>
+    
+</body>
+</html>
