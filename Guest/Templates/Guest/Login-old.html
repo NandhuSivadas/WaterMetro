@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <h2 align="center">Login </h2>
+        <table border="1" align="center" cellpadding="10">
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="txt_email" id=""></td>
+            </tr>
+            <tr>
+                <td>Pasword</td>
+                <td><input type="password" name="txt_pass" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit">
+                    <input type="reset" value="Cancel">
+                </td>
+
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>
+{%if msg %}
+<script>
+    alert("{{msg}}")
+</script>
+{% endif %}

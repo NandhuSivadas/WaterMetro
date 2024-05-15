@@ -22,8 +22,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('wadmin/',include('Admin.urls')),
-    path('User/',include('User.urls')),
-    path('Guest/',include('Guest.urls')),
+    path('User/',include('User.urls')), 
+    path('',include('Guest.urls')),
     path('StationMaster/',include('StationMaster.urls')),
     
  

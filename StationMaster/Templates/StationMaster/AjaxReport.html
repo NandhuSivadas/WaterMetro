@@ -1,0 +1,47 @@
+<table border="1" align="center" cellpadding="10">
+    <tr>
+        <td>sl no</td>
+        <td>Date</td>
+        <td>Passenger Count</td>
+        <td>Amount</td>
+        <td>Ticket Type</td>
+        <td>Customer</td>
+        <td>Contact</td>
+        <td>Boat</td>
+        <td>Action</td>
+        
+    </tr>
+    {% for i in booking  %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.date}}</td>
+        <td>{{i.Passenger_count}}</td>
+        <td>{{i.book_amount}}</td>
+        <td>{{i.ticket_type.ticket_type}}</td>
+        <td>{{i.user.user_name}}</td>
+        <td>{{i.user.user_contact}}</td>
+        <td>
+            {% if i.assign == NULL %}
+            <span style="color: red;">N/A</span>
+            {% else %}
+            {{i.assign.boat.boat_name}}
+            {% endif %}
+        </td>
+        <td>
+            {% if i.status == 0 %}
+            <span style="color: red;">Not Payed</span>
+            {% elif i.status == 1 %}
+            <span style="color: green;">Payed</span>
+            {% elif i.status == 2 %}
+            <span style="color: green;">Assigned</span>
+            {% elif i.status == 3 %}
+            <span style="color: red;">Canceled</span>
+            {% elif i.status == 4 %}
+            <span style="color: red;">Re Funded</span>
+            {% else %}
+            Error
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

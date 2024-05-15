@@ -6,6 +6,9 @@ from User.models import *
 
 # Create your views here.
 
+def homepage(request):
+    return render(request,"Admin/Homepage.html") 
+
 def stationmasterregistration(request):
     disdata=tbl_district.objects.all()
     placedata=tbl_place.objects.all()
@@ -51,13 +54,31 @@ def place(request):
     place=tbl_place.objects.all()
     if request.method=="POST":
         distid=tbl_district.objects.get(id=request.POST.get("dropdown"))
-        place=request.POST.get("place")
+        placed=request.POST.get("place")
         
-        tbl_place.objects.create(place_name=place,district=distid)
+        tbl_place.objects.create(place_name=placed,district=distid)
         return render(request,'Admin/Place.html',{'Ddata':disdata,'place':place})
     else:       
 
         return render(request,'Admin/Place.html',{'Ddata':disdata,'place':place})
+    
+
+def del_place(request,did):
+    tbl_place.objects.get(id=did).delete()
+    return redirect('webadmin:place')
+
+def update_place(request,did):
+    updata=tbl_place.objects.get(id=did)
+    disob=tbl_place.objects.all()
+    disdata=tbl_district.objects.all()
+    if request.method=="POST":
+        updata.place_name=request.POST.get("place")
+        updata.district=tbl_district.objects.get(id=request.POST.get("dropdown"))
+        updata.save()
+        return redirect('webadmin:place')
+    else:
+        return render(request,'Admin/Place.html',{'Ddata':disdata,'udata':updata})
+
     
 def del_district(request,did):
     tbl_district.objects.get(id=did).delete()
@@ -125,7 +146,7 @@ def update_tickettype(request,did):
     
 def boat(request):
     BoatData=tbl_boat.objects.all()
-    if request.method=="POST" and request.FILES:
+    if request.method=="POST":
         tbl_boat.objects.create(boat_name=request.POST.get("txt_name"),
                                 boat_capacity=request.POST.get("txt_capacity")
                                 ,boat_entrydate=request.POST.get("txt_entrydate"))
@@ -158,11 +179,28 @@ def addevent(request):
                                     addevent_eventtype=tbl_eventtype.objects.get(id=request.POST.get("select")),     
                                     addevent_details=request.POST.get("txt_details"),
                                     addevent_passengercount=request.POST.get("txt_capacity"))
-        return render(request,'Admin/AddEvent.html')
+        return render(request,'Admin/AddEvent.html',{'Data':EventData,'EventData':AddEventData})
     else:
         return render(request,'Admin/AddEvent.html',{'Data':EventData,'EventData':AddEventData})
     
 
+def del_event(request,did):
+    tbl_addevent.objects.get(id=did).delete()
+    return redirect('webadmin:addevent')
+
+def update_event(request,did):
+    EventData=tbl_eventtype.objects.all()
+    updata=tbl_addevent.objects.get(id=did)
+    if request.method=='POST':
+        updata.addevent_title=request.POST.get("txt_title")
+        updata.addevent_eventtype=tbl_eventtype.objects.get(id=request.POST.get("select"))
+        updata.addevent_details=request.POST.get("txt_details")
+        updata.addevent_passengercount=request.POST.get("txt_capacity")
+        updata.save()
+        return redirect('webadmin:addevent')
+    else:
+        return render(request,'Admin/AddEvent.html',{'Data':EventData,'updata':updata})
+    
 def food(request):
     FoodData=tbl_food.objects.all()
     if request.method=="POST" :
@@ -196,14 +234,22 @@ def update_food(request,did):
 
 
 def stock(request,did):
-    count=tbl_stock.objects.get(id=request.get(id=did)).count()
-    if count > 0:
-        stockData=tbl_stock.objects.get(id=request.get(id=did))
-        stockData.stock_name=stockData.stock_name + request.POST.get("txt_stock")
-        stockData.product=food
+    food=tbl_food.objects.get(id=did)
+    stockdata=tbl_stock.objects.filter(product=food)
+    if request.method=="POST":
+        count=tbl_stock.objects.filter(product=food).count()
+        if count > 0:
+            stockData=tbl_stock.objects.get(product=food)
+            stockData.stock_name=int(stockData.stock_name) + int(request.POST.get("txt_stock"))
+            stockData.product=food
+            stockData.save()
+            return redirect("webadmin:stock_food",did=did)
+        else:
+            tbl_stock.objects.create(stock_name=request.POST.get("txt_stock"),
+                                 product=food)
+            return render(request,"Admin/Stock.html",{'stock':stockdata})
     else:
-        tbl_stock.objects.create(stock_name=request.POST.get("txt_stock"),product=food)
-
+        return render(request,"Admin/Stock.html",{'stock':stockdata})
 
 
 
@@ -223,16 +269,35 @@ def reply(request,did):
     else:
         return render(request,'Admin/Reply.html')        
 
-         
+def delete_stock(request,id):
+    tbl_stock.objects.get(id=id).delete()
+    return redirect("webadmin:food")
 
-   
+def logout(request):
+    del request.session["aid"]
+    return redirect("wguest:login")
 
 
-
- 
-
-
-                
- 
-   
+def ajaxreport(request):
+    if (request.GET.get("fdate")!="") and (request.GET.get("tdate")!="") and (request.GET.get("status")!=""):
+        booking = tbl_ticketbooking.objects.filter(date__gte=request.GET.get("fdate"),date__lte=request.GET.get("tdate"),status=request.GET.get("status"))
+        return render(request,"Admin/AjaxReport.html",{"booking":booking})
+    elif (request.GET.get("fdate")!="") and (request.GET.get("status")!=""):
+        booking = tbl_ticketbooking.objects.filter(date__gte=request.GET.get("fdate"),status=request.GET.get("status"))
+        return render(request,"Admin/AjaxReport.html",{"booking":booking})
+    elif (request.GET.get("tdate")!="") and (request.GET.get("status")!=""):
+        booking = tbl_ticketbooking.objects.filter(date__lte=request.GET.get("tdate"),status=request.GET.get("status"))
+        return render(request,"Admin/AjaxReport.html",{"booking":booking})
+    elif request.GET.get("fdate")!="":
+        booking = tbl_ticketbooking.objects.filter(date__gte=request.GET.get("fdate"))
+        return render(request,"Admin/AjaxReport.html",{"booking":booking})
+    elif request.GET.get("tdate")!="":
+        booking = tbl_ticketbooking.objects.filter(date__lte=request.GET.get("tdate"))
+        return render(request,"Admin/AjaxReport.html",{"booking":booking})
+    elif request.GET.get("status")!="":
+        booking = tbl_ticketbooking.objects.filter(status=request.GET.get("status"))
+        return render(request,"Admin/AjaxReport.html",{"booking":booking})
     
+def report(request):
+    booking = tbl_ticketbooking.objects.all()
+    return render(request,'Admin/Report.html',{"booking":booking})

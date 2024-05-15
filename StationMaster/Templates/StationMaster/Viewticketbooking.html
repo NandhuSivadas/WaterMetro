@@ -1,0 +1,115 @@
+{% extends 'StationMaster/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Booking</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include custom CSS if needed -->
+    <!-- <link rel="stylesheet" href="{% static 'custom.css' %}"> -->
+    <style>
+        /* Add custom CSS here if needed */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .status-not-payed {
+            color: red;
+        }
+        .status-payed {
+            color: green;
+        }
+        .status-assigned {
+            color: green;
+        }
+        .status-canceled {
+            color: red;
+        }
+        .status-refunded {
+            color: red;
+        }
+        .action-links a {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center"> View Tickets</h1>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>SL No</th>
+                    <th>Date</th>
+                    <th>Passenger Count</th>
+                    <th>Amount</th>
+                    <th>Ticket Type</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Boat</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in booking %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.Passenger_count }}</td>
+                    <td>{{ item.book_amount }}</td>
+                    <td>{{ item.ticket_type.ticket_type }}</td>
+                    <td>{{ item.user.user_name }}</td>
+                    <td>{{ item.user.user_contact }}</td>
+                    <td>
+                        {% if item.assign %}
+                        {{ item.assign.boat.boat_name }}
+                        {% else %}
+                        <span style="color: red;">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td class="action-links">
+                        {% if item.status == 0 %}
+                        <span class="status-not-payed">Not Payed</span>
+                        {% elif item.status == 1 %}
+                        <span class="status-payed">Payed</span> | <a href="{% url 'WebStationMaster:userboat_assign' item.id %}">Assign Boat</a>
+                        {% elif item.status == 2 %}
+                        <span class="status-assigned">Assigned</span>
+                        {% elif item.status == 3 %}
+                        <span class="status-canceled">Canceled</span> | <a href="{% url 'WebStationMaster:refund' item.id %}">Re Fund</a>
+                        {% elif item.status == 4 %}
+                        <span class="status-refunded">Re Funded</span>
+                        {% else %}
+                        Error
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if msg %}
+    <script>
+        alert("{{msg}}");
+        window.location = "{% url 'WebStationMaster:viewticketbooking' %}";
+    </script>
+    {% endif %}
+</body>
+</html>
+{% endblock content %}

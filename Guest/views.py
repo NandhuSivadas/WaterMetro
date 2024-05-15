@@ -4,6 +4,9 @@ from Guest.models import *
 
 # Create your views here.
 
+
+def home_page(request):
+    return render(request,'Guest/Homepage.html')
    
 def userregistration(request):
     disdata=tbl_district.objects.all()
@@ -44,14 +47,14 @@ def login(request):
             userdata=tbl_user.objects.get(user_email=email,user_password=password)
             request.session['uid']=userdata.id
             return redirect('webuser:homepage')
-        if admincount > 0:
+        elif admincount > 0:
             admindata=tbl_admin.objects.get(admin_email=email,admin_password=password)
             request.session['aid']=admindata.id
-            return redirect('webadmin:Homepage')
+            return redirect('webadmin:homepage')
         elif stationmastercount > 0:
-            stationmasterdata=tbl_stationmaster.objects.get(user_email=email,user_password=password)
-            request.session['uid']=stationmasterdata.id
-            return redirect('WebStationMaster:Homepage')
+            stationmasterdata=tbl_stationmaster.objects.get(master_email=email,master_password=password)
+            request.session['sid']=stationmasterdata.id
+            return redirect('WebStationMaster:homepage')
         else:
             msg="Invalid credentials!!"
             return render(request,'Guest/Login.html',{'msg':msg})

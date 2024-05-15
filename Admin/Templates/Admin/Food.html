@@ -1,60 +1,94 @@
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Food</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Custom CSS -->
+    <style>
+        /* Custom CSS */
+        .container {
+            max-width: 800px; /* Adjust container max-width as needed */
+        }
+        .form-table {
+            margin: 0 auto; /* Center align the form table */
+        }
+        .form-table td {
+            vertical-align: middle; /* Center align content vertically */
+        }
+        img.food-image {
+            max-width: 150px; /* Limit image size */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
 </head>
 <body>
-    <form action="" method="post"  enctype="multipart/form-data">
-        {% csrf_token %}
-        <h2 align="center">Food </h2>
-        <table border="1" align="center" cellpadding="10">
-            <tr>
-                <td>Name</td>
-                <td><input type="text" name="txt_name" id=""  value="{{udata.food_name}}"></td>
-            </tr>
-            <tr>
-                <td>Description</td>
-                <td><input type="text" name="txt_description" id=""  value="{{udata.food_description}}"></td>
-            </tr>
-            <tr>
-                <td>Image</td>
-                <td><input type="file" name="txt_file" id=""  value="{{udata.food_image}}"></td>
-            </tr>
-            <tr>
-                <td>Rate</td>
-                <td><input type="text" name="txt_rate" id=""  value="{{udata.food_rate}}"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit">
-                      <input type="reset" value="Cancel"></td>
-              
-            </tr>
+    <div class="container">
+        <h2 class="text-center">Food</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="table table-bordered form-table">
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" class="form-control" name="txt_name" value="{{udata.food_name}}"></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td><input type="text" class="form-control" name="txt_description" value="{{udata.food_description}}"></td>
+                </tr>
+                <tr>
+                    <td>Image</td>
+                    <td><input type="file" class="form-control-file" name="txt_file"></td>
+                </tr>
+                <tr>
+                    <td>Rate</td>
+                    <td><input type="text" class="form-control" name="txt_rate" value="{{udata.food_rate}}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="reset" class="btn btn-secondary" value="Cancel">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>SL No</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Rate</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in Data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.food_name}}</td>
+                    <td>{{i.food_description}}</td>
+                    <td><img src="{{i.food_image.url}}" alt="" class="food-image"></td>
+                    <td>{{i.food_rate}}</td>
+                    <td>
+                        <a href="{% url 'webadmin:del_food' i.id %}" class="btn btn-danger">Delete</a>
+                        <a href="{% url 'webadmin:stock_food' i.id %}" class="btn btn-primary">Stock</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-        <br><br>
-         <table border="1", align="center" cellpadding="10">
-            <tr>
-                <td>SL No</td>
-                <td>Name</td>
-                <td>Description</td>
-                <td>Image</td>
-                <td>Rate</td>
-                <td>Action</td>
-            </tr>
-            {% for i in Data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.food_name}}</td>
-                <td>{{i.food_description}}</td>
-                <td><img src="{{i.food_image.url}}" alt="" width="150" height="150"></td>
-                <td>{{i.food_rate}}</td>
-                <td><a href="{% url 'webadmin:del_food' i.id %}">Delete</a> ||
-                    ||<a href="{% url 'webadmin:stock_food' i.id %}">Stock </a>
-                </td>
-            </tr>
-            {% endfor %}
-         </table>
-    </form>
+    </div>
 </body>
 </html>
+
+<!-- Bootstrap JS Bundle (Bootstrap JS and Popper.js) -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock content %}

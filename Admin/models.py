@@ -38,7 +38,7 @@ class tbl_tickettype(models.Model):
 class tbl_boat(models.Model):
     boat_name=models.CharField(max_length=10)
     boat_capacity=models.IntegerField()
-    boat_entrydate=models.DateField(max_length=10)
+    boat_entrydate=models.DateField()
     
 class tbl_addevent(models.Model):
     addevent_title=models.CharField(max_length=50)

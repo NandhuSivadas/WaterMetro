@@ -1,3 +1,5 @@
+from datetime import datetime
+import random
 from django.shortcuts import render,redirect
 from User.models import *
 from Admin.models import *
@@ -55,14 +57,14 @@ def ticketbooking(request):
     TicketData=tbl_tickettype.objects.all()
     if request.method=="POST":
         tbl_ticketbooking.objects.create(date=request.POST.get("txt_date"),
-                                      ticket_type=tbl_tickettype.objects.get(id=request.POST.get("select")),
-                                      passenger_count=request.POST.get("txt_count"),
+                                      ticket_type=tbl_tickettype.objects.get(id=request.POST.get("txt_tickettype")),
+                                      Passenger_count=request.POST.get("txt_number"),
                                       book_amount=request.POST.get("txt_amount"),
                                       user=user)
         
         return render(request,'User/TicketBooking.html')
     else:
-        return render(request,'User/ticketBooking.html',{'Data':TicketData,'user':user})
+        return render(request,'User/TicketBooking.html',{'Data':TicketData,'user':user})
     
 def ajaxrate(request):
     if request.GET.get("count") != "":
@@ -84,5 +86,126 @@ def complaint(request):
         return render(request,'User/Complaint.html')
 
 def viewmyticket(request):
-    user=tbl_user.objects.get(id=request.session['uid'])
-    return render(request,'User/ViewMyTicket.html')
+    userid=tbl_user.objects.get(id=request.session['uid'])
+    ticketdata=tbl_ticketbooking.objects.filter(user=userid)
+    return render(request,'User/ViewMyTicket.html',{'ticket':ticketdata})
+
+def Viewfood(request):
+    Food=tbl_food.objects.all()
+    return render(request,'User/Food.html',{'food':Food})
+
+def Addcart(request,pid):
+    if 'uid' in request.session:
+        fooddata=tbl_food.objects.get(id=pid)
+        custdata=tbl_user.objects.get(id=request.session["uid"])
+        tbl_bookingcount=tbl_booking.objects.filter(user=custdata,booking_status=0).count()
+        if tbl_bookingcount>0:
+         tbl_bookingdata=tbl_booking.objects.get(user=custdata,booking_status=0)
+         tbl_cartcount=tbl_cart.objects.filter(booking=tbl_bookingdata,food=fooddata).count()
+         if tbl_cartcount>0:
+          msg="Already added"
+          return render(request,"User/Food.html",{'msg':msg})
+         else:
+        
+          tbl_cart.objects.create(booking=tbl_bookingdata,food=fooddata,cart_qty=1)
+          return redirect("webuser:Viewfood")
+        else:
+           tbl_booking.objects.create(user=custdata)
+           tbl_bookingcount=tbl_booking.objects.filter(booking_status=0,user=custdata).count()
+           if tbl_bookingcount>0:
+            tbl_bookingdata=tbl_booking.objects.get(user=custdata,booking_status=0)
+            tbl_cartcount=tbl_cart.objects.filter(booking=tbl_bookingdata,food=fooddata).count()
+            if tbl_cartcount>0:
+             msg=" added"
+             return render(request,"User/Food.html",{'msg':msg})
+            else:
+             tbl_cart.objects.create(booking=tbl_bookingdata,food=fooddata,cart_qty=1)
+             return redirect("webuser:Viewfood")
+    else:
+          return redirect("wguest:login")
+
+def Mycart(request):
+   if request.method=="POST":
+     bookingdata=tbl_booking.objects.get(id=request.session["bookingid"])
+     bookingdata.booking_amount=request.POST.get("carttotalamt")
+     bookingdata.booking_status=1
+     bookingdata.save()
+     return redirect("webuser:pay")
+   else:
+    customerdata=tbl_user.objects.get(id=request.session["uid"])
+    bcount=tbl_booking.objects.filter(user=customerdata,booking_status=0).count()
+   #cartcount=cart.objects.filter(booking__customer=customerdata,booking__status=0).count()
+    if bcount>0:
+    #cartdata=cart.objects.filter(booking__customer=customerdata,booking__status=0)
+     book=tbl_booking.objects.get(user=customerdata,booking_status=0)
+     bid=book.id
+     request.session["bookingid"]=bid
+     bkid=tbl_booking.objects.get(id=bid)
+     cartdata=tbl_cart.objects.filter(booking=bkid)
+     return render(request,"User/MyCart.html",{'data':cartdata})
+    else:
+      return render(request,"User/MyCart.html")
+def DelCart(request,did):
+   tbl_cart.objects.get(id=did).delete()
+   return redirect("webuser:Mycart")
+def CartQty(request):
+   qty=request.GET.get('QTY')
+   cartid=request.GET.get('ALT')
+   cartdata=tbl_cart.objects.get(id=cartid)
+   cartdata.cart_qty=qty
+   cartdata.save()
+   return redirect("webuser:Mycart")
+
+def Payment(request):
+   booking=tbl_booking.objects.get(id=request.session["bookingid"])
+   amount=booking.booking_amount
+   if request.method=="POST":
+      booking.payment_status=1
+      booking.save()
+      return redirect("webuser:Billing")
+   else:
+    return render(request,"User/Payment.html",{'amnt':amount})
+   
+def paymentticket(request,id):
+   booking=tbl_ticketbooking.objects.get(id=id)
+   amount=booking.book_amount
+   if request.method=="POST":
+      booking.status=1
+      booking.save()
+      return redirect("webuser:loader")
+   else:
+    return render(request,"User/Payment.html",{'amnt':amount})
+
+def loader(request):
+    return render(request,"User/Loader.html")
+
+def paymentsuc(request):
+    return render(request,"User/Payment_suc.html")
+
+def cancelbooking(request,id):
+    booking=tbl_ticketbooking.objects.get(id=id)
+    booking.status= 3
+    booking.save()
+    return redirect("webuser:viewmyticket")
+
+def Billing(request):
+    if 'uid' in request.session:
+        billno=random.randint(10000,99999)
+   
+        today = datetime.now()
+        today=today.strftime("%d-%m-%Y")
+   
+        farm=tbl_user.objects.get(id=request.session["uid"])
+        uobj=tbl_booking.objects.get(id=request.session['bookingid'])
+        amnt=uobj.booking_amount
+        cart=tbl_cart.objects.filter(booking=uobj)
+        return render(request,"User/Bill.html",{'billno':billno,'today':today,'userdata':farm,'data':cart,'amnt':amnt})
+    else:
+        return redirect("wguest:login")
+
+
+
+def logout(request):
+    del request.session["uid"]
+    return redirect("wguest:login")
+

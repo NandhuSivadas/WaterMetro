@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table cellpadding="10" align="center">
+        <tr>
+            <td>Status</td>
+            <td>From Date</td>
+            <td><input type="date" name="txt_fdate" id="txt_fdate" onchange="getReport()"></td>
+            <td>To Date</td>
+            <td><input type="date" name="txt_tdate" id="txt_tdate" onchange="getReport()"></td>
+            <td>Status</td>
+            <td>
+                <select name="txt_con" id="txt_con" onchange="getReport()">
+                    <option value="">....Select....</option>
+                    <option value="0">Not Payed</option>
+                    <option value="1">Payed</option>
+                    <option value="2">Assigned</option>
+                    <option value="3">Cancelled</option>
+                    <option value="4">Refunded</option>
+                </select>
+            </td>
+            <td><button onclick="getPrint('result')">Print</button></td>
+        </tr>
+    </table>
+    <div id="result">
+        <table border="1" align="center" cellpadding="10">
+            <tr>
+                <td>sl no</td>
+                <td>Date</td>
+                <td>Passenger Count</td>
+                <td>Amount</td>
+                <td>Ticket Type</td>
+                <td>Customer</td>
+                <td>Contact</td>
+                <td>Boat</td>
+                <td>Action</td>
+                
+            </tr>
+            {% for i in booking  %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.date}}</td>
+                <td>{{i.Passenger_count}}</td>
+                <td>{{i.book_amount}}</td>
+                <td>{{i.ticket_type.ticket_type}}</td>
+                <td>{{i.user.user_name}}</td>
+                <td>{{i.user.user_contact}}</td>
+                <td>
+                    {% if i.assign == NULL %}
+                    <span style="color: red;">N/A</span>
+                    {% else %}
+                    {{i.assign.boat.boat_name}}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.status == 0 %}
+                    <span style="color: red;">Not Payed</span>
+                    {% elif i.status == 1 %}
+                    <span style="color: green;">Payed</span>
+                    {% elif i.status == 2 %}
+                    <span style="color: green;">Assigned</span>
+                    {% elif i.status == 3 %}
+                    <span style="color: red;">Canceled</span>
+                    {% elif i.status == 4 %}
+                    <span style="color: red;">Re Funded</span>
+                    {% else %}
+                    Error
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function getReport() {
+        var status = document.getElementById('txt_con').value
+        var fdate = document.getElementById('txt_fdate').value
+        var tdate = document.getElementById('txt_tdate').value
+        var ur = "{% url 'WebStationMaster:ajaxreport' %}"
+        $.ajax({
+            url: ur,
+            data: { status: status,fdate: fdate,tdate: tdate },
+            success: function (data) {
+                $("#result").html(data);
+            },
+        });
+    }
+
+    function getPrint(bill) {
+        var printContent = document.getElementById(bill).innerHTML;
+        var originalContent = document.body.innerHTML;
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+</script>

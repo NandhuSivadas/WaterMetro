@@ -1,0 +1,48 @@
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .sub {
+            padding: 20px;
+            background-color: #0088cc26;
+            width: fit-content;
+            border-radius: 10px;
+        }
+
+        .main {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+    </style>
+</head>
+<body>
+    {% if msg  %}
+    <script>
+        alert("{{msg}}")
+        window.location="{% url 'webuser:Viewfood'  %}"
+    </script>
+    {% endif %}
+    <div class="main">
+        {% for i in food  %}
+        <div class="sub">
+            <div><img src="{{i.food_image.url}}" width="150" height="150"></div>
+            <div>{{i.food_name}}</div>
+            <div>{{i.food_description}}</div>
+            <div>Rs.{{i.food_rate}}</div>
+            <div><a href="{% url 'webuser:Addcart' i.id %}">Addcart</a></div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock content %}
+

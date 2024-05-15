@@ -1,12 +1,13 @@
 from django.shortcuts import render,redirect
 from Admin.models import *
 from StationMaster.models import *
+from User.models import *
 
 # Create your views here.
 
 def home_page(request):
-    stationmaster=tbl_stationmaster.objects.get(id=request.session['uid'])
-    return render(request,'User/Homepage.html',{' stationmaster': stationmaster})
+    stationmaster=tbl_stationmaster.objects.get(id=request.session['sid'])
+    return render(request,'StationMaster/Homepage.html',{' stationmaster': stationmaster})
 
 
 def service(request):
@@ -19,27 +20,28 @@ def service(request):
     
 
 def my_profile(request):
-    if request.method=="POST":
-        stationmaster=tbl_stationmaster.objects.get(id=request.session['uid'])
-        return render(request,'StationMaster/MyProfile.html',{' stationmaster': stationmaster})
-    else:
-        return render(request,'StationMaster/MyProfile.html')
+        stationmaster=tbl_stationmaster.objects.get(id=request.session['sid'])
+        print(stationmaster)
+        return render(request,'StationMaster/MyProfileNew.html',{'stationmaster': stationmaster})
+   
 
 def edit_profile(request):
+
+    stationmaster=tbl_stationmaster.objects.get(id=request.session['sid'])
     if request.method=="POST":
-        stationmaster=tbl_stationmaster.objects.get(id=request.session['uid'])
+   
         stationmaster.master_name=request.POST.get("txt_name")
         stationmaster.master_contact=request.POST.get("txt_contact")
         stationmaster.master_email=request.POST.get("txt_email")
         stationmaster.master_address=request.POST.get("txt_address")
         stationmaster.save()
-        return render(request,'StationMaster/EditProfile.html',{' stationmaster': stationmaster})
+        return render(request,'StationMaster/EditProfileNew.html',{'stationmaster': stationmaster})
     
     else:
-        return render(request,'StationMaster/EditProfile.html',{' stationmaster': stationmaster})
+        return render(request,'StationMaster/EditProfileNew.html',{'stationmaster': stationmaster})
     
 def changepassword(request):
-    stationmaster=stationmaster.objects.get(id=request.session['uid'])
+    stationmaster=tbl_stationmaster.objects.get(id=request.session['sid'])
     if request.method=="POST":
         currentpass=request.POST.get("txt_currentpassword")
         if stationmaster.master_password == currentpass:
@@ -105,7 +107,58 @@ def update_assignboat(request,did):
         return redirect('WebStationMaster:assignboat')
     else:
         return render(request, 'StationMaster/AssignBoat.html', {'udata':updata,'Data':BoatData,'Sdata':ServiceData})
+    
+def viewticketbooking(request):
+    booking = tbl_ticketbooking.objects.all()
+    return render(request,"StationMaster/Viewticketbooking.html",{"booking":booking})
+
+def userboat_assign(request,id):
+    boat = tbl_assignboat.objects.all()
+    if request.method == "POST":
+        assi = tbl_ticketbooking.objects.get(id=id)
+        boat = tbl_assignboat.objects.get(id=request.POST.get("sel_boat"))
+        assi.assign = boat
+        assi.status = 2
+        assi.save()
+        return render(request,"StationMaster/Viewticketbooking.html",{"msg":"Boat Assigned..."})
+    else:
+        return render(request,"StationMaster/User_Boat_assign.html",{"boat":boat})
+
+def refund(request,id):
+    booking=tbl_ticketbooking.objects.get(id=id)
+    amount=booking.book_amount
+    if request.method=="POST":
+        booking.status = 4
+        booking.save()
+        return redirect("WebStationMaster:viewticketbooking")
+    else:
+        return render(request,"StationMaster/Payment.html",{'amnt':amount})
+
+def report(request):
+    booking = tbl_ticketbooking.objects.all()
+    return render(request,'StationMaster/Report.html',{"booking":booking})
+
+def ajaxreport(request):
+    if (request.GET.get("fdate")!="") and (request.GET.get("tdate")!="") and (request.GET.get("status")!=""):
+        booking = tbl_ticketbooking.objects.filter(date__gte=request.GET.get("fdate"),date__lte=request.GET.get("tdate"),status=request.GET.get("status"))
+        return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
+    elif (request.GET.get("fdate")!="") and (request.GET.get("status")!=""):
+        booking = tbl_ticketbooking.objects.filter(date__gte=request.GET.get("fdate"),status=request.GET.get("status"))
+        return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
+    elif (request.GET.get("tdate")!="") and (request.GET.get("status")!=""):
+        booking = tbl_ticketbooking.objects.filter(date__lte=request.GET.get("tdate"),status=request.GET.get("status"))
+        return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
+    elif request.GET.get("fdate")!="":
+        booking = tbl_ticketbooking.objects.filter(date__gte=request.GET.get("fdate"))
+        return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
+    elif request.GET.get("tdate")!="":
+        booking = tbl_ticketbooking.objects.filter(date__lte=request.GET.get("tdate"))
+        return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
+    elif request.GET.get("status")!="":
+        booking = tbl_ticketbooking.objects.filter(status=request.GET.get("status"))
+        return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
 
 
-
-
+def logout(request):
+    del request.session["sid"]
+    return redirect("wguest:login")

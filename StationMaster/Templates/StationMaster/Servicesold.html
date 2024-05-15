@@ -1,0 +1,53 @@
+{% extends 'StationMaster/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <h2 align="center">Services</h2>
+        <table border="1" align="center" cellpadding="10">
+            <tr>
+                <td>Start Point</td>
+                <td><input type="text" name="txt_startpoint" id="" value="{{udata.start_point}}"></td>
+            </tr>
+            <tr>
+                <td>End Point</td>
+                <td><input type="text" name="txt_endpoint" id="" value="{{udata.end_point}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit">
+                      <input type="reset" value="Cancel"></td>
+                
+            </tr>
+        </table><br>
+        <table border="1" align="center" cellpadding="10">
+           
+            <tr>
+                <td>SL NO</td>
+                <td>Start Point</td>
+                <td>End Point</td>
+                <td>Actions</td>
+            </tr>
+            {% for i in Data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.start_point}}</td>
+                <td>{{i.end_point}}</td>
+               <td> <a href="{% url 'WebStationMaster:del_service' i.id %}">Delete</a> ||
+                <a href="{% url 'WebStationMaster:update_assignboat' i.id %}">Update</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </form>
+</body>
+</html>
+{% endblock content %}
