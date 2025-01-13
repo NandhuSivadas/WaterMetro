@@ -1,9 +1,11 @@
 from datetime import datetime
 import random
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from User.models import *
 from Admin.models import *
 from Guest.models import *
+
 
 
 # Create your views here.
@@ -106,9 +108,9 @@ def Addcart(request,pid):
           msg="Already added"
           return render(request,"User/Food.html",{'msg':msg})
          else:
+            tbl_cart.objects.create(booking=tbl_bookingdata,food=fooddata,cart_qty=1)
+            return redirect("webuser:Viewfood")   
         
-          tbl_cart.objects.create(booking=tbl_bookingdata,food=fooddata,cart_qty=1)
-          return redirect("webuser:Viewfood")
         else:
            tbl_booking.objects.create(user=custdata)
            tbl_bookingcount=tbl_booking.objects.filter(booking_status=0,user=custdata).count()
@@ -209,3 +211,61 @@ def logout(request):
     del request.session["uid"]
     return redirect("wguest:login")
 
+
+def eventlist(request):
+    event=tbl_addevent.objects.all()
+    return render(request,'User/EventList.html',{'event':event})
+
+def eventbooking(request,did):
+    Event=tbl_addevent.objects.get(id=did)
+    user=tbl_user.objects.get(id=request.session['uid'])
+    if request.method=="POST":
+        tbl_eventbooking.objects.create(date=request.POST.get("txt_date"),
+                                      tickettype=request.POST.get("txt_type"),
+                                      Passenger_count=request.POST.get("txt_count"),
+                                      book_amount=request.POST.get("txt_rate"),
+                                      details=request.POST.get("txt_details"),
+                                      user=user)
+        err=1
+        return render(request,'User/ViewEventBooking.html',{'msg':err})
+    else:
+        return render(request,'User/EventBooking.html',{'user':user,'Event':Event})
+
+def vieweventbooking(request):
+    userid=tbl_user.objects.get(id=request.session['uid'])
+    ticketdata=tbl_eventbooking.objects.filter(user=userid)
+    return render(request,'User/ViewEventBooking.html',{'ticket':ticketdata})
+
+
+def paymentevent(request,id):
+   booking=tbl_eventbooking.objects.get(id=id)
+   amount=booking.book_amount
+   if request.method=="POST":
+      booking.status=1
+      booking.save()
+      return redirect("webuser:loader")
+   else:
+    return render(request,"User/Payment.html",{'amnt':amount})
+
+def loader(request):
+    return render(request,"User/Loader.html")
+
+def paymentsuc(request):
+    return render(request,"User/Payment_suc.html")
+
+def canceleventbooking(request,id):
+    booking=tbl_eventbooking.objects.get(id=id)
+    booking.status= 3
+    booking.save()
+    return redirect("webuser:viewmyticket")
+
+
+def review(request):
+   if request.method=="POST":
+      tbl_review.objects.create(review=request.POST.get("txt_review"))
+      return redirect("webuser:reviewloader")
+   else:
+      return render(request,'User/Review.html')
+   
+def reviewloader(request):
+   return render(request,'User/ReviewLoader.html')

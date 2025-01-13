@@ -40,8 +40,9 @@
                     </div>
                     <div class="col-md-2">
                         <!-- <input type="submit" class="profile-edit-btn" name="editprofile" value="Edit Profile"/> -->
-                        <a href="{% url 'WebStationMaster:editprofile' %}">EditProfile</a><br>
-                        <a href="{% url 'WebStationMaster:changepassword' %}">Change Password</a>
+                        <a href="{% url 'WebStationMaster:editprofile' %}" class="btn btn-custom">Edit Profile</a><br>
+                        <a href="{% url 'WebStationMaster:changepassword' %}" class="btn btn-custom">Change Password</a>
+
                     </div>
                 </div>
                 <div class="row">
@@ -258,6 +259,9 @@
     font-weight: 600;
     color: #0062cc;
 }
+
+   /* Custom CSS for Edit and Change Password Links */
+
       </style>
       </html>
       {% endblock content %} 

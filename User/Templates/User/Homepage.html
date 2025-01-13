@@ -61,8 +61,8 @@
                   <span class="icon-location-arrow text-primary"></span>
                 </div>
                 <div class="text">
-                  <span class="h4 d-block">San Francisco</span>
-                  <span class="caption-text">Mountain View, Fake st., CA</span>
+                  <span class="h4 d-block">Water Metro</span>
+                  <span class="caption-text">Kochi</span>
                 </div>
               </div>
 
@@ -73,7 +73,7 @@
                   <span class="icon-phone text-primary"></span>
                 </div>
                 <div class="text">
-                  <span class="h4 d-block">000 209 392 312</span>
+                  <span class="h4 d-block">000 000 1111 11111</span>
                   <span class="caption-text">Toll free</span>
                 </div>
               </div>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="text">
                   <span class="h4 d-block">info@gmail.com</span>
-                  <span class="caption-text">Gournadi, 1230 Bariasl</span>
+                  <span class="caption-text">waterboat</span>
                 </div>
               </div>
             </div>
@@ -121,12 +121,20 @@
                   <li>
                       <a href="{% url 'webuser:Viewfood' %} " class="nav-link text-left">Food</a>
                   </li>
-                  <li>
-                    <a href="{% url 'webuser:Mycart' %} " class="nav-link text-left">My cart</a>
-                </li>
+               
                 <li>
                   <a href="{% url 'webuser:viewmyticket' %} " class="nav-link text-left">View Ticket</a>
               </li>
+              <li>
+                <a href="{% url 'webuser:eventlist' %} " class="nav-link text-left">Event List</a>
+            </li>
+            <li>
+              <a href="{% url 'webuser:vieweventbooking' %} " class="nav-link text-left">Event Bookings</a>
+          </li>
+          <li>
+            <a href="{% url 'webuser:review' %} " class="nav-link text-left">Review</a>
+        </li>
+         
               <li>
                 <a href="{% url 'webuser:logout' %} " class="nav-link text-left">logout</a>
             </li>

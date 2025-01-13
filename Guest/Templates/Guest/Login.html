@@ -31,8 +31,10 @@
                 <span>or use your email password</span>
                 <input type="email" placeholder="Email"  name="txt_email"  autocomplete="off">
                 <input type="password" placeholder="Password" name="txt_pass"  autocomplete="off">
-                <a href="#">Forget Your Password?</a>
+                <a href="{% url 'wguest:forgetpassword' %}">Forget Your Password?</a>
+                <a href="{% url 'wguest:glog' %}">Sign with Google</a>
                 <input class="btn-login" type="submit" value="Sign In"></button>
+               
 
             </form>
         </div>
@@ -42,11 +44,12 @@
                     <h1>Welcome Back!</h1>
                     <p>Enter your personal details to use all of site features</p>
                     <button class="hidden" id="login">Sign In</button>
+              
                 </div>
                 <div class="toggle-panel toggle-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Register with your personal details to use all of site features</p>
-                    <button class="hidden" id="register"><a href="{% url 'wguest:userregistration' %}">Sign Up</button></a>
+                    <h1>Hello!</h1>
+                    <p>"Why drive when you can glide? Hop on our Water Metro and 'seas' the day!"</p>
+            
 
                 </div>
             </div>

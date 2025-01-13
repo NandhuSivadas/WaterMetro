@@ -1,0 +1,80 @@
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Event</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 50px;
+        }
+        .form-title {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .form-control[readonly] {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 form-container">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <h2 class="form-title text-center">Book Event</h2>
+                    <div class="form-group">
+                        <label for="txt_date">For Date</label>
+                        <input type="date" class="form-control" name="txt_date" id="txt_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_title">Event Title</label>
+                        <input type="text" class="form-control" name="txt_title" id="txt_title" value="{{Event.addevent_title}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_details">Details</label>
+                        <input type="text" class="form-control" name="txt_details" id="txt_details" value="{{Event.addevent_details}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_type">Event Type</label>
+                        <input type="text" class="form-control" name="txt_type" id="txt_type" value="{{Event.addevent_eventtype.event_type}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_rate">Event Rate</label>
+                        <input type="text" class="form-control" name="txt_rate" id="txt_rate" value="{{Event.addevent_rate}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_count">Passenger Count</label>
+                        <input type="text" class="form-control" name="txt_count" id="txt_count" value="{{Event.addevent_passengercount}}" readonly>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Book Event</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+    {% endblock content %}

@@ -25,6 +25,7 @@ urlpatterns = [
     path('User/',include('User.urls')), 
     path('',include('Guest.urls')),
     path('StationMaster/',include('StationMaster.urls')),
+    path('ML/',include('ML.urls')),
     
  
 

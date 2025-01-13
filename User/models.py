@@ -34,3 +34,16 @@ class tbl_cart(models.Model):
     cart_qty=models.IntegerField()
     food=models.ForeignKey(tbl_food,on_delete=models.CASCADE)
     cart_status=models.CharField(max_length=10,default=0)
+
+class tbl_eventbooking(models.Model):
+    date=models.DateField()
+    Passenger_count=models.CharField(max_length=10)
+    tickettype=models.CharField(max_length=10)
+    book_amount=models.CharField(max_length=10)
+    details=models.CharField(max_length=80)
+    user=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
+    assign = models.ForeignKey(tbl_assignboat,on_delete=models.CASCADE,null=True)
+    status = models.IntegerField(default=0)
+
+class tbl_review(models.Model):
+    review=models.CharField(max_length=100)

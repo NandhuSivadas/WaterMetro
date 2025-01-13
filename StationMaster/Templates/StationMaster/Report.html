@@ -7,31 +7,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Report</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         /* Custom CSS */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
             margin: 20px;
         }
         h1 {
-           font-family: "Times New Roman", Times, serif;
-           margin: 20px;
+            font-family: "Times New Roman", Times, serif;
+            margin: 20px 0;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .table-container {
+            margin-top: 20px;
         }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
+        .form-control {
+            max-width: 150px;
         }
         .btn {
             margin-right: 5px;
@@ -45,75 +39,98 @@
     </style>
 </head>
 <body>
-    <h1 align="center">Report</h1>
     <div class="container">
-        <table class="table">
-            <tr>
-                <td>Status</td>
-                <td>From Date</td>
-                <td><input type="date" class="form-control" id="txt_fdate" onchange="getReport()"></td>
-                <td>To Date</td>
-                <td><input type="date" class="form-control" id="txt_tdate" onchange="getReport()"></td>
-                <td>Status</td>
-                <td>
-                    <select class="form-control" id="txt_con" onchange="getReport()">
-                        <option value="">....Select....</option>
-                        <option value="0">Not Payed</option>
-                        <option value="1">Payed</option>
-                        <option value="2">Assigned</option>
-                        <option value="3">Cancelled</option>
-                        <option value="4">Refunded</option>
-                    </select>
-                </td>
-                <td><button class="btn btn-primary print-btn" onclick="getPrint('result')">Print</button></td>
-            </tr>
-        </table>
+        <h1 class="text-center">Report</h1>
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select class="form-control" id="txt_con" onchange="getReport()">
+                                <option value="">....Select....</option>
+                                <option value="0">Not Payed</option>
+                                <option value="1">Payed</option>
+                                <option value="2">Assigned</option>
+                                <option value="3">Cancelled</option>
+                                <option value="4">Refunded</option>
+                            </select>
+                        </td>
+                        <td><input type="date" class="form-control" id="txt_fdate" onchange="getReport()"></td>
+                        <td><input type="date" class="form-control" id="txt_tdate" onchange="getReport()"></td>
+                        <td>
+                            <select class="form-control" id="txt_status" onchange="getReport()">
+                                <option value="">....Select....</option>
+                                <option value="0">Not Payed</option>
+                                <option value="1">Payed</option>
+                                <option value="2">Assigned</option>
+                                <option value="3">Cancelled</option>
+                                <option value="4">Refunded</option>
+                            </select>
+                        </td>
+                        <td><button class="btn btn-primary print-btn" onclick="getPrint('result')">Print</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div id="result" class="result-table">
-            <table class="table">
-                <tr>
-                    <td>SL No</td>
-                    <td>Date</td>
-                    <td>Passenger Count</td>
-                    <td>Amount</td>
-                    <td>Ticket Type</td>
-                    <td>Customer</td>
-                    <td>Contact</td>
-                    <td>Boat</td>
-                    <td>Action</td>
-                </tr>
-                {% for item in booking %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.Passenger_count }}</td>
-                    <td>{{ item.book_amount }}</td>
-                    <td>{{ item.ticket_type.ticket_type }}</td>
-                    <td>{{ item.user.user_name }}</td>
-                    <td>{{ item.user.user_contact }}</td>
-                    <td>
-                        {% if item.assign %}
-                        {{ item.assign.boat.boat_name }}
-                        {% else %}
-                        <span style="color: red;">N/A</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if item.status == 0 %}
-                        <span style="color: red;">Not Payed</span>
-                        {% elif item.status == 1 %}
-                        <span style="color: green;">Payed</span>
-                        {% elif item.status == 2 %}
-                        <span style="color: green;">Assigned</span>
-                        {% elif item.status == 3 %}
-                        <span style="color: red;">Canceled</span>
-                        {% elif item.status == 4 %}
-                        <span style="color: red;">Re Funded</span>
-                        {% else %}
-                        Error
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>SL No</th>
+                        <th>Date</th>
+                        <th>Passenger Count</th>
+                        <th>Amount</th>
+                        <th>Ticket Type</th>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Boat</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in booking %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.Passenger_count }}</td>
+                        <td>{{ item.book_amount }}</td>
+                        <td>{{ item.ticket_type.ticket_type }}</td>
+                        <td>{{ item.user.user_name }}</td>
+                        <td>{{ item.user.user_contact }}</td>
+                        <td>
+                            {% if item.assign %}
+                            {{ item.assign.boat.boat_name }}
+                            {% else %}
+                            <span class="text-danger">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.status == 0 %}
+                            <span class="text-danger">Not Payed</span>
+                            {% elif item.status == 1 %}
+                            <span class="text-success">Payed</span>
+                            {% elif item.status == 2 %}
+                            <span class="text-success">Assigned</span>
+                            {% elif item.status == 3 %}
+                            <span class="text-danger">Cancelled</span>
+                            {% elif item.status == 4 %}
+                            <span class="text-danger">Refunded</span>
+                            {% else %}
+                            Error
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
@@ -143,6 +160,10 @@
             document.body.innerHTML = originalContent;
         }
     </script>
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}

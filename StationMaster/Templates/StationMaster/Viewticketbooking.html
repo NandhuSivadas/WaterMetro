@@ -16,19 +16,17 @@
         /* Add custom CSS here if needed */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
+        .table-container {
+            margin-top: 20px;
         }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+        .table thead th {
+            background-color: #343a40;
+            color: white;
         }
-        th {
-            background-color: #f2f2f2;
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
         }
         .status-not-payed {
             color: red;
@@ -51,16 +49,17 @@
     </style>
 </head>
 <body>
-    <h1 align="center"> View Tickets</h1>
-    <div class="container">
-        <table class="table">
-            <thead>
+    <div class="container table-container">
+        <h1 class="text-center my-4">View Tickets</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
                 <tr>
                     <th>SL No</th>
                     <th>Date</th>
                     <th>Passenger Count</th>
                     <th>Amount</th>
                     <th>Ticket Type</th>
+                    <th>Booking ID</th>
                     <th>Customer</th>
                     <th>Contact</th>
                     <th>Boat</th>
@@ -75,26 +74,28 @@
                     <td>{{ item.Passenger_count }}</td>
                     <td>{{ item.book_amount }}</td>
                     <td>{{ item.ticket_type.ticket_type }}</td>
+                    <td>bktoken  {{ item.id }}</td>
+
                     <td>{{ item.user.user_name }}</td>
                     <td>{{ item.user.user_contact }}</td>
                     <td>
                         {% if item.assign %}
                         {{ item.assign.boat.boat_name }}
                         {% else %}
-                        <span style="color: red;">N/A</span>
+                        <span class="text-danger">N/A</span>
                         {% endif %}
                     </td>
                     <td class="action-links">
                         {% if item.status == 0 %}
                         <span class="status-not-payed">Not Payed</span>
                         {% elif item.status == 1 %}
-                        <span class="status-payed">Payed</span> | <a href="{% url 'WebStationMaster:userboat_assign' item.id %}">Assign Boat</a>
+                        <span class="status-payed">Payed</span> | <a href="{% url 'WebStationMaster:userboat_assign' item.id %}" class="btn btn-sm btn-primary">Assign Boat</a>
                         {% elif item.status == 2 %}
                         <span class="status-assigned">Assigned</span>
                         {% elif item.status == 3 %}
-                        <span class="status-canceled">Canceled</span> | <a href="{% url 'WebStationMaster:refund' item.id %}">Re Fund</a>
+                        <span class="status-canceled">Canceled</span> | <a href="{% url 'WebStationMaster:refund' item.id %}" class="btn btn-sm btn-warning">Refund</a>
                         {% elif item.status == 4 %}
-                        <span class="status-refunded">Re Funded</span>
+                        <span class="status-refunded">Refunded</span>
                         {% else %}
                         Error
                         {% endif %}
@@ -110,6 +111,10 @@
         window.location = "{% url 'WebStationMaster:viewticketbooking' %}";
     </script>
     {% endif %}
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}

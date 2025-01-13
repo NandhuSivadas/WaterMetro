@@ -22,5 +22,9 @@ urlpatterns = [
 
     path('ajaxreport/',views.ajaxreport,name="ajaxreport"),
 
+    path('ViewEventBooking/',views.vieweventbooking,name='vieweventbooking'),
+    path('user_eventboat_assign/<int:id>',views.user_eventboat_assign,name="user_eventboat_assign"),
+
+    path('PrintCard/',views.printcard,name='printcard'),
 
 ]

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="google icon.png" type="image/x-icon">
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <title>Sign In - Google accounts</title>
+
+
+  <style>
+    * {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-family: 'zen kaku gothic antique', sans-serif;
+}
+
+h2 {
+    color: #202124;
+}
+
+
+.inputContainer {
+    max-width: 22rem;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 53px 44px 40px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login {
+    margin-top: 16px;
+    margin-bottom: 5px;
+    font-weight:500;
+}
+
+.use {
+    font-weight: 500;
+    color: #202124;
+}
+
+.gInput {
+    width: 100%;
+    height: 3.5rem;
+    margin-top: 40px;
+    border: 0.5px solid lightgray;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 0 0 0 15px;
+    background-color: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.gInput:focus {
+    border: 2px solid #4285f4;
+    caret-color: #4285f4;
+}
+
+.gInput:focus ~ .inputLabel:before {
+    color: #4285f4;
+    caret-color: #4285f4;
+    font-size: 12px;
+    top: -65px;
+    transition: 0.2s;
+    z-index: 1;
+}
+
+.inputLabel {
+    position: relative;
+    width: 200px;
+}
+
+.inputLabel:before {
+    content: "Email or phone";
+    position: absolute;
+    top: -41px;
+    left: -65px;
+    background-color: white;
+    font-size: 16px;
+    color: #5f6368;
+    z-index: 1;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.forgotContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.guest {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    font-size: 14px;
+    color: #5f6368;
+    font-weight: 500;
+    margin-left: -10px;
+}
+
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.buttonContainer a {
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 5px 24px 8px 24px;
+    margin-top: 30px;
+    margin-left: -26px;
+}
+
+.btnCreate:hover {
+    color: #366fca;
+    background-color: white;
+}
+
+.btnNext {
+    background-color: rgb(26,115,232);
+    color: white;
+    transition: 0.1s ease;
+}
+
+.btnNext:hover {
+    background-color: #1b66c9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.forgot, .btnCreate {
+    color: rgb(26,115,232);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.learnmore {
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #1a73e8;
+    display: inline-block;
+    font-weight: 500;
+    letter-spacing: .25px;
+    outline: 0;
+    margin-left: -274px;
+    margin-top: -35px;
+    cursor: pointer;
+
+}
+
+.guest, .inputLabel:before {
+    color: #5f6368;
+    font-weight: 400;
+}
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+    justify-content: space-evenly;
+    line-height: 1.3333333;
+    padding: 0 24px;
+    box-sizing: inherit;
+    margin-top: -100px;
+
+  }
+  .footer a {
+    color: #202124;
+    text-decoration: none;
+    margin: 10px;
+    display: flex;
+    margin: 25 -30px;
+    padding: 0;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    font-size: 12px;
+  }
+  .footer a:hover {
+    text-decoration: underline;
+  }
+  .language-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: -35px;
+    margin-right: 155px;
+    color: #202124;
+  }
+  .language-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 120px;
+    box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+    bottom: 25px;
+    max-height: 450px; 
+    overflow-y: auto;  
+  }
+  .language-dropdown.active .language-dropdown-content {
+    display: block;
+  }
+  .language-dropdown-content a {
+    color: #202124;
+    padding: 8px 10px;
+    text-decoration: none;
+    display: block;
+  }
+  .language-dropdown-content a:hover {
+    background-color: rgb(232,240,254);
+  }
+  .language-selected {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  </style>
+
+</head>
+<body>
+  <main class="inputContainer">
+    <img src="google.png" alt="" width="80" height="30">
+    <h2 class="login">Sign in</h2>
+    <h4 class="use">with your Google Account</h4>
+    <input id="gInput" type="text" class="gInput">
+    <label class="inputLabel" for="gInput"></label>
+    <div class="forgotContainer">
+      <h5 class="forgot">Forgot email?</h5>
+    </div>
+    <h4 class="guest">Not your computer? Use Guest mode to sign in privately. </h4>
+    <span class="learnmore">Learn more</span>
+    <div class="buttonContainer">
+      <a href="" class="btnCreate">Create account</a>
+      <a href="" class="btnNext">Next</a>
+    </div>
+  </main>
+
+  <div class="footer">
+    <!-- Language Dropdown -->
+    <div class="language-dropdown">
+      <div class="language-selected" id="languageSelected">English(United States)</div>
+      <span>&#9660;</span> <!-- Unicode for a downward-pointing triangle -->
+      <div class="language-dropdown-content" id="languageDropdown">
+        <a href="#">Afrikaans</a>
+        <a href="#">azərbaycan</a>
+        <a href="#">bosanski</a>
+        <a href="#">català</a>
+        <a href="#">Čeština</a>
+        <a href="#">Cymraeg</a>
+        <a href="#">Dansk</a>
+        <a href="#">Deutsch</a>
+        <a href="#">Deutsch</a>
+        <a href="#">English (United Kingdom)</a>
+        <a href="#">English (United States)</a>
+        <a href="#">Español (España)</a>
+        <a href="#">Español (Latinoamérica)</a>
+        <a href="#">Filipino</a>
+        <a href="#">Français (Canada)</a>
+        <a href="#">Français (France)</a>
+        <a href="#">Gaeilge</a>
+        <a href="#">galego</a>
+        <a href="#">Indonesia</a>
+        <a href="#">isiZulu</a>
+        <a href="#">íslenska</a>
+        <a href="#">Kiswahili</a>
+        <a href="#">latviešu</a>
+        <a href="#">lietuvių</a>
+        <a href="#">magyar</a>
+        <a href="#">Melayu</a>
+        <a href="#">Nederlands</a>
+        <a href="#">norsk</a>
+        <a href="#">o‘zbek</a>
+        <a href="#">shqip</a>
+        <a href="#">Tiếng Việt</a>
+        <a href="#">Türkçe</a>
+        <a href="#">Ελληνικά</a>
+        <a href="#">беларуская</a>
+        <a href="#">български</a>
+        <a href="#">кыргызча</a>
+        <a href="#">қазақ тілі</a>
+        <a href="#">македонски</a>
+        <a href="#">монгол</a>
+        <a href="#">Русский</a>
+        <a href="#">српски (ћирилица)</a>
+        <a href="#">Українська</a>
+        <a href="#">ქართული</a>
+        <a href="#">հայերեն</a>
+        <a href="#">‫עברית</a>
+        <a href="#">‫اردو</a>
+        <a href="#">‫العربية</a>
+        <a href="#">‫فارسی</a>
+        <a href="#">नेपाली</a>
+        <a href="#">मराठी</a>
+        <a href="#">हिन्दी</a>
+        <a href="#">অসমীয়া</a>
+        <a href="#">বাংলা</a>
+        <a href="#">ਪੰਜਾਬੀ</a>
+        <a href="#">ગુજરાતી</a>
+        <a href="#">ଓଡ଼ିଆ</a>
+        <a href="#">தமிழ்</a>
+        <a href="#">తెలుగు</a>
+        <a href="#">ಕನ್ನಡ</a>
+        <a href="#">മലയാളം</a>
+        <a href="#">සිංහල</a>
+        <a href="#">ไทย</a>
+        <a href="#">ລາວ</a>
+        <a href="#">မြန်မာ</a>
+        <a href="#">ខ្មែរ</a>
+        <a href="#">한국어</a>
+        <a href="#">中文（香港</a>
+        <a href="#">日本語</a>
+        <a href="#">简体中文</a>
+        <a href="#">繁體中文</a>
+
+        <!-- Add more language options as needed -->
+      </div>
+    </div>
+    <!-- Help Link -->
+    <a href="#">Help</a>
+    <!-- Privacy Link -->
+    <a href="#">Privacy</a>
+    <!-- Terms Link -->
+    <a href="#">Terms</a>
+  </div>
+
+
+  <script>
+   // To handle the language dropdown
+    document.addEventListener('DOMContentLoaded', function () {
+      const languageDropdown = document.querySelector('.language-dropdown');
+      const languageSelected = document.getElementById('languageSelected');
+      const languageOptions = document.getElementById('languageDropdown');
+
+      languageSelected.addEventListener('click', function () {
+        languageOptions.style.display = languageOptions.style.display === 'block' ? 'none' : 'block';
+      });
+
+      // To hide the dropdown when clicking outside of it
+      window.addEventListener('click', function (event) {
+        if (!languageDropdown.contains(event.target)) {
+          languageOptions.style.display = 'none';
+        }
+      });
+
+      // To handle language selection
+      languageOptions.querySelectorAll('a').forEach(function (option) {
+        option.addEventListener('click', function () {
+          const selectedLanguage = this.textContent;
+          languageSelected.textContent = selectedLanguage;
+          languageOptions.style.display = 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

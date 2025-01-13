@@ -158,7 +158,26 @@ def ajaxreport(request):
         booking = tbl_ticketbooking.objects.filter(status=request.GET.get("status"))
         return render(request,"StationMaster/AjaxReport.html",{"booking":booking})
 
+def vieweventbooking(request):
+    booking = tbl_eventbooking.objects.all()
+    return render(request,"StationMaster/ViewEventBooking.html",{"booking":booking})
+
 
 def logout(request):
     del request.session["sid"]
     return redirect("wguest:login")
+
+def user_eventboat_assign(request,id):
+    boat = tbl_assignboat.objects.all()
+    if request.method == "POST":
+        assi = tbl_eventbooking.objects.get(id=id)
+        boat = tbl_assignboat.objects.get(id=request.POST.get("sel_boat"))
+        assi.assign = boat
+        assi.status = 2
+        assi.save()
+        return render(request,"StationMaster/ViewEventbooking.html",{"msg":"Boat Assigned..."})
+    else:
+        return render(request,"StationMaster/User_Boat_assign.html",{"boat":boat})
+
+def printcard(request):
+    return render(request,'StationMaster/PrintCard.html')

@@ -16,6 +16,11 @@ urlpatterns = [
 
 
     path('StationMasterRegistration/',views.stationmasterregistration,name='stationmasterregistration'),
+    path('delete_stationmaster/<int:did>',views.delete_stationmaster,name='delete_stationmaster'),
+    
+
+
+
     path('ajax_place/',views.ajax_place,name='AjaxPlace'),
     path('del_district/<int:did>',views.del_district,name='Del_district'),
     path('update_district/<int:did>',views.update_district,name='Update_district'),

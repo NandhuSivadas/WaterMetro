@@ -7,7 +7,11 @@ from User.models import *
 # Create your views here.
 
 def homepage(request):
-    return render(request,"Admin/Homepage.html") 
+    AdminData=tbl_admin.objects.get(id=request.session['aid'])
+    usercount=tbl_user.objects.all().count()
+    stationcount=tbl_stationmaster.objects.all()
+    count=tbl_stationmaster.objects.all().count()
+    return render(request,"Admin/Homepage.html",{'Admin':AdminData,'Ucount':usercount,'Scount':stationcount,'count':count}) 
 
 def stationmasterregistration(request):
     disdata=tbl_district.objects.all()
@@ -18,7 +22,7 @@ def stationmasterregistration(request):
         email=request.POST.get("txt_email")
         gender=request.POST.get("txt_gender")   
         address=request.POST.get("txt_address")  
-        photo=request.FILES.get("txt_photo")
+        photo=request.FILES.get("txt_file")
         proof=request.FILES.get("txt_proof")
         password=request.POST.get("txt_password")
         tbl_stationmaster.objects.create(master_name=name,master_contact=contact,master_email=email,master_gender=gender,master_address=address,master_photo=photo,master_proof=proof,master_password=password)
@@ -29,7 +33,15 @@ def stationmasterregistration(request):
 
         return render(request,'Admin/StationMasterRegistration.html',{'Ddata':disdata,'Pdata':placedata})
 
-      
+
+    
+def delete_stationmaster(request,did):
+    tbl_stationmaster.objects.get(id=did).delete()
+    return redirect('webadmin:homepage')
+
+
+
+
 
 
 def ajax_place(request):
@@ -178,7 +190,8 @@ def addevent(request):
         tbl_addevent.objects.create(addevent_title=request.POST.get("txt_title"),
                                     addevent_eventtype=tbl_eventtype.objects.get(id=request.POST.get("select")),     
                                     addevent_details=request.POST.get("txt_details"),
-                                    addevent_passengercount=request.POST.get("txt_capacity"))
+                                    addevent_passengercount=request.POST.get("txt_capacity"),
+                                    addevent_rate=request.POST.get("txt_rate"))
         return render(request,'Admin/AddEvent.html',{'Data':EventData,'EventData':AddEventData})
     else:
         return render(request,'Admin/AddEvent.html',{'Data':EventData,'EventData':AddEventData})

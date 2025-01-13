@@ -28,7 +28,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="district">District name</label>
-                        <select class="form-select" name="dropdown" id="district">
+                        <select class="form-select" name="dropdown" id="district" required>
                             <option value="">select</option>
                             {% for i in Ddata %}
                             <option value="{{i.id}}">{{i.district_name}}</option>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="place">Place name</label>
-                        <input type="text" class="form-control" name="place" id="place" value="{{udata.place_name}}">
+                        <input type="text" class="form-control" name="place" id="place" value="{{udata.place_name}}" pattern="[a-zA-Z ]{4,20}" title="Enter Correct Name" autocomplete="off" required>
                     </div>
                     <button type="submit" class="btn btn-primary">ADD</button>
                 </div>

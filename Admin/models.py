@@ -45,6 +45,7 @@ class tbl_addevent(models.Model):
     addevent_eventtype=models.ForeignKey(tbl_eventtype,on_delete=models.CASCADE)
     addevent_details=models.CharField(max_length=50)
     addevent_passengercount=models.IntegerField()
+    addevent_rate=models.IntegerField()
 
 class tbl_food(models.Model):
     food_name=models.CharField(max_length=50)

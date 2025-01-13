@@ -1,0 +1,218 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-family: 'zen kaku gothic antique', sans-serif;
+}
+
+h2 {
+    color: #202124;
+}
+
+
+.inputContainer {
+    max-width: 22rem;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 53px 44px 40px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login {
+    margin-top: 16px;
+    margin-bottom: 5px;
+    font-weight: bolder;
+}
+
+.use {
+    font-weight: 500;
+    color: #202124;
+}
+
+.gInput {
+    width: 100%;
+    height: 3.5rem;
+    margin-top: 40px;
+    border: 0.5px solid lightgray;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 0 0 0 15px;
+    background-color: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.gInput:focus {
+    border: 2px solid #4285f4;
+}
+
+.gInput:focus ~ .inputLabel:before {
+    color: #4285f4;
+    font-size: 12px;
+    top: -65px;
+    transition: 0.2s;
+    z-index: 1;
+}
+
+.inputLabel {
+    position: relative;
+    width: 200px;
+}
+
+.inputLabel:before {
+    content: "Email or phone";
+    position: absolute;
+    top: -41px;
+    left: -65px;
+    background-color: white;
+    font-size: 16px;
+    color: #5f6368;
+    z-index: 1;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.forgotContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.guest {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    font-size: 14px;
+    color: #5f6368;
+    font-weight: 400;
+    margin-left: -10px;
+}
+
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.buttonContainer a {
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 5px 24px 8px 24px;
+    margin-top: 30px;
+    margin-left: -26px;
+}
+
+.btnCreate:hover {
+    color: #366fca;
+    background-color: white;
+}
+
+.btnNext {
+    background-color: rgb(26,115,232);
+    color: white;
+    transition: 0.1s ease;
+}
+
+.btnNext:hover {
+    background-color: #1b66c9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.forgot, .btnCreate {
+    color: rgb(26,115,232);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.learnmore {
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #1a73e8;
+    display: inline-block;
+    font-weight: 500;
+    letter-spacing: .25px;
+    outline: 0;
+    margin-left: -274px;
+    margin-top: -35px;
+    cursor: pointer;
+
+}
+
+.guest, .inputLabel:before {
+    color: #5f6368;
+    font-weight: 400;
+}
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+    justify-content: space-evenly;
+    line-height: 1.3333333;
+    padding: 0 24px;
+    box-sizing: inherit;
+    margin-top: -50px;
+
+  }
+  .footer a {
+    color: #202124;
+    text-decoration: none;
+    margin: 10px;
+    display: flex;
+    margin: 25 -30px;
+    padding: 0;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    font-size: 12px;
+  }
+  .footer a:hover {
+    text-decoration: underline;
+  }
+  .language-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: -35px;
+    margin-right: 155px;
+    color: #202124;
+  }
+  .language-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 120px;
+    box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.2); 
+    z-index: 1;
+    bottom: 25px;
+    max-height: 450px; 
+    overflow-y: auto;  
+  }
+  .language-dropdown.active .language-dropdown-content {
+    display: block;
+  }
+  .language-dropdown-content a {
+    color: #202124;
+    padding: 8px 10px;
+    text-decoration: none;
+    display: block;
+  }
+  .language-dropdown-content a:hover {
+    background-color: rgb(232,240,254);
+  }
+  .language-selected {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+  }

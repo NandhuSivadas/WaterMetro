@@ -54,28 +54,30 @@
                         <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div> -->
-                    <div class="ms-3">
+                    <!-- <div class="ms-3">
                         <h6 class="mb-0">Jhon Doe</h6>
                         <span>Admin</span>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    <div class="nav-item dropdown">
+                    <a href="{% url 'webadmin:homepage' %}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Elements</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="button.html" class="dropdown-item">Buttons</a>
                             <a href="typography.html" class="dropdown-item">Typography</a>
                             <a href="element.html" class="dropdown-item">Other Elements</a>
                         </div>
-                    </div>
+                    </div> -->
                     <a href="{% url 'webadmin:District' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>District</a>
                     <a href="{% url 'webadmin:place' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>place</a>
-                    <a href="{% url 'webadmin:stationmasterregistration' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>station registration</a>
+                    <a href="{% url 'webadmin:stationmasterregistration' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>station register</a>
                     <a href="{% url 'webadmin:addevent' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>addevent</a>
                     <a href="{% url 'webadmin:food' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>food</a>
                     <a href="{% url 'webadmin:boat' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>boat</a>
                     <a href="{% url 'webadmin:event_type' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Event Type</a>
+                    <a href="{% url 'webml:homepage' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Review Analysis</a>
+
                     <a href="{% url 'webadmin:report' %}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Report</a>
                     
             

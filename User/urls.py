@@ -24,6 +24,24 @@ path('LogOut/',views.logout,name="logout"),
 path('loader/',views.loader,name="loader"),
 path('paymentsuc/',views.paymentsuc,name="paymentsuc"),
 
+path('EventList/',views.eventlist,name='eventlist'),
+path('EventBooking/<int:did>',views.eventbooking,name='eventbooking'),
+path('ViewEventBooking/',views.vieweventbooking,name='vieweventbooking'),
+
+path('paymentevent/<int:id>',views.paymentevent,name='paymentevent'),
+path('canceleventbooking/<int:id>',views.canceleventbooking,name='canceleventbooking'),
+
+path('Review/',views.review,name='review'),
+path('ReviewLoader/',views.reviewloader,name='reviewloader'),
+
+
+
+
+
+
+
+
+
 
 
 

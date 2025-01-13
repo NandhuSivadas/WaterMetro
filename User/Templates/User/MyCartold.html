@@ -309,6 +309,7 @@
    <body onload="recalculateCart()">
     <form method="POST" id="Form" data-quantity-url="{% url 'webuser:cartqty' %}" >
         {%csrf_token %}
+        <h2>My Cart</h2>
         <div class="shopping-cart" style="margin-top: 50px">
             <div class="column-labels">
                 <label class="product-image">Image</label>

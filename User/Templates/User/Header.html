@@ -60,12 +60,19 @@
                 <li>
                     <a href="{% url 'webuser:Viewfood' %} " class="nav-link text-left">Food</a>
                 </li>
-                <li>
-                  <a href="{% url 'webuser:Mycart' %} " class="nav-link text-left">My cart</a>
-              </li>
+                
               <li>
                 <a href="{% url 'webuser:viewmyticket' %} " class="nav-link text-left">View Ticket</a>
             </li>
+            <li>
+              <a href="{% url 'webuser:eventlist' %} " class="nav-link text-left">Event List</a>
+          </li>
+          <li>
+            <a href="{% url 'webuser:vieweventbooking' %} " class="nav-link text-left">Event Bookings</a>
+        </li>
+        <li>
+          <a href="{% url 'webuser:review' %} " class="nav-link text-left">Review</a>
+      </li>
             <li>
               <a href="{% url 'webuser:logout' %} " class="nav-link text-left">logout</a>
           </li>

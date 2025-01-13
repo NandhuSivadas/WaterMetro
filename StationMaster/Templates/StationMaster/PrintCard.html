@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form to ATM Card</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #e9ecef;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-wrapper {
+            position: relative;
+            width: 48%;
+        }
+
+        .form-container {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .form-container h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        button.update {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        button.update:hover {
+            background-color: #0056b3;
+        }
+
+        button.print {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        button.print:hover {
+            background-color: #218838;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #6c757d;
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+
+        .card-container {
+            width: 48%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .atm-card {
+            width: 400px; /* Increased width */
+            background: #003366;
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .atm-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .atm-card h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .atm-card p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .atm-card .info {
+            font-weight: 600;
+        }
+
+        .atm-card .card-number {
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .atm-card .dates {
+            margin-top: 15px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .atm-card .dates p {
+            margin: 0;
+        }
+
+        @media print {
+            .container {
+                display: block;
+                margin: 0;
+                padding: 0;
+            }
+
+            .form-wrapper {
+                display: none;
+            }
+
+            .card-container {
+                width: 100%;
+                box-shadow: none;
+                background: none;
+                padding: 0;
+            }
+
+            .atm-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                width: auto;
+                height: auto;
+            }
+
+            .card-container button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'WebStationMaster:homepage' %}" class="back-to-home">Back to Home</a> 
+    <div class="container">
+        <div class="form-wrapper">
+           
+            <div class="form-container">
+                <h2>Fill Out Your Information</h2>
+                <form id="infoForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
+
+                    <label for="contact">Contact Number:</label>
+                    <input type="text" id="contact" name="contact" required>
+
+                    <label for="Course">Course:</label>
+                    <input type="text" id="Course" name="Course" required>
+
+                    <label for="Duration">Duration:</label>
+                    <input type="text" id="Duration" name="Duration" required>
+
+                    <label for="issue">Date of Issue:</label>
+                    <input type="text" id="issue" name="issue" required>
+
+                    <label for="expiry">Date of Expiry:</label>
+                    <input type="text" id="expiry" name="expiry" required>
+
+                    <button type="button" class="update" onclick="updateCard()">Update Card</button>
+                    <button type="button" class="print" onclick="printCard()">Print Card</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="infoCard" class="card-container">
+            <div class="atm-card">
+                <h2>Concession Card</h2>
+                <p class="card-number" id="cardNumber">**** **** **** ****</p>
+                <p><span class="info">Name:</span> <span id="cardName"></span></p>
+                <p><span class="info">Age:</span> <span id="cardAge"></span></p>
+                <p><span class="info">Contact Number:</span> <span id="cardContact"></span></p>
+                <p><span class="info">Course:</span> <span id="cardCourse"></span></p>
+                <p><span class="info">Duration:</span> <span id="cardDuration"></span></p>
+                <div class="dates">
+                    <p><span class="info">Date of Issue:</span> <span id="cardissue"></span></p>
+                    <p><span class="info">Date of Expiry:</span> <span id="cardexpiry"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCard() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const contact = document.getElementById('contact').value;
+            const issue = document.getElementById('issue').value;
+            const expiry = document.getElementById('expiry').value;
+            const course = document.getElementById('Course').value;
+            const duration = document.getElementById('Duration').value;
+
+            document.getElementById('cardName').textContent = name;
+            document.getElementById('cardAge').textContent = age;
+            document.getElementById('cardContact').textContent = contact;
+            document.getElementById('cardCourse').textContent = course;
+            document.getElementById('cardDuration').textContent = duration;
+            document.getElementById('cardissue').textContent = issue;
+            document.getElementById('cardexpiry').textContent = expiry;
+        }
+
+        function printCard() {
+            const printContent = document.getElementById('infoCard').innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+        }
+
+        document.getElementById('name').addEventListener('input', updateCard);
+        document.getElementById('age').addEventListener('input', updateCard);
+        document.getElementById('contact').addEventListener('input', updateCard);
+        document.getElementById('issue').addEventListener('input', updateCard);
+        document.getElementById('expiry').addEventListener('input', updateCard);
+        document.getElementById('Course').addEventListener('input', updateCard);
+        document.getElementById('Duration').addEventListener('input', updateCard);
+    </script>
+</body>
+</html>

@@ -46,6 +46,10 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Event Rate</td>
+                    <td><input type="number" class="form-control" name="txt_rate" value="{{updata.addevent_passengercount}}"></td>
+                </tr>
+                <tr>
                     <td>Details</td>
                     <td><textarea class="form-control" name="txt_details">{{updata.addevent_details}}</textarea></td>
                 </tr>
@@ -68,6 +72,7 @@
                     <th>SL NO</th>
                     <th>Title</th>
                     <th>Event Type</th>
+                    <th>Event Rate</th>
                     <th>Details</th>
                     <th>Passenger Capacity</th>            
                     <th>Actions</th>
@@ -78,7 +83,8 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td>{{i.addevent_title}}</td>
-                    <td>{{i.addevent_eventtype_id}}</td>
+                    <td>{{i.addevent_eventtype.event_type}}</td>
+                    <td>{{i.addevent_rate}}</td>
                     <td>{{i.addevent_details}}</td>
                     <td>{{i.addevent_passengercount}}</td>
                     <td>

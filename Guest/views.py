@@ -1,4 +1,10 @@
 from django.shortcuts import render,redirect
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
+from django.conf import settings
+import random
 from Admin.models import *
 from Guest.models import *
 
@@ -60,3 +66,106 @@ def login(request):
             return render(request,'Guest/Login.html',{'msg':msg})
     else:
         return render(request,'Guest/Login.html')
+
+def ForgetPassword(request):
+    
+    if request.method=="POST":
+        otp=random.randint(10000, 999999)
+        request.session["otp"]=otp
+        request.session["femail"]=request.POST.get('txtemail')
+        send_mail(
+            'Respected Sir/Madam ',#subject
+            "\rYour OTP for Reset Password Is"+str(otp),#body
+            settings.EMAIL_HOST_USER,
+            [request.POST.get('txtemail')],
+        )
+        return redirect("wguest:verification")
+    else:
+        return render(request,"Guest/ForgetPassword.html")
+        
+
+def OtpVerification(request):
+    if request.method=="POST":
+        otp=int(request.session["otp"])
+        if int(request.POST.get('txtotp'))==otp:
+            userdata=tbl_user.objects.get(user_email=email)
+            request.session['uid']=userdata.id
+            return redirect('webuser:homepage')
+    return render(request,"Guest/Gverify.html")
+
+def CreateNewPass(request):
+    if request.method=="POST":
+        if request.POST.get('txtpassword2')==request.POST.get('txtpassword3'):
+            usercount=tbl_user.objects.filter(user_email=request.session["femail"]).count()
+            if usercount>0:
+                user=tbl_user.objects.get(user_email=request.session["femail"])
+                user.user_password=request.POST.get('txtpassword2')
+                user.save()
+                return redirect("wguest:login")
+    else:       
+        return render(request,"Guest/CreateNewPassword.html")
+
+
+def ajaxemail(request):
+    usercount=tbl_user.objects.filter(user_email=request.GET.get("email")).count() 
+    if usercount>0:
+        return render(request,"Guest/Ajaxemail.html",{'mess':1})
+    else:
+         return render(request,"Guest/Ajaxemail.html")
+
+def google(request):
+    if request.method=="POST":
+        otp=random.randint(10000, 999999)
+        request.session["otp"]=otp
+        request.session["femail"]=request.POST.get('txtemail')
+        send_mail(
+            'Respected Sir/Madam ',#subject
+            "\rYour OTP for Reset Password Is"+str(otp),#body
+            settings.EMAIL_HOST_USER,
+            [request.POST.get('txtemail')],
+        )
+        return redirect("wguest:Gverify")
+    else:
+        return render(request,"Guest/Glog.html")
+    
+
+
+def Gverify(request):
+    if request.method=="POST":
+        otp=int(request.session["otp"])
+        email=request.session["femail"]
+        if int(request.POST.get('txtotp'))==otp:
+            userdata=tbl_user.objects.get(user_email=email)
+            request.session['uid']=userdata.id
+            return redirect('webuser:homepage')
+    return render(request,"Guest/OTPVerification.html")
+    
+
+def emailvalid(request):
+    
+    if request.method=="POST":
+        otp=random.randint(10000, 999999)
+        request.session["otp"]=otp
+        request.session["femail"]=request.POST.get('txt_email')
+        send_mail(
+            'Respected Sir/Madam ',#subject
+            "\rYour OTP for Reset Password Is"+str(otp),#body
+            settings.EMAIL_HOST_USER,
+            [request.POST.get('txt_email')],
+        )
+        return redirect("webguest:user_registration")
+    else:
+        return render(request,"Guest/UserRegistration.html")
+
+def emailverification(request):
+    if request.method=="POST":
+        otp=int(request.session["otp"])
+        if int(request.POST.get('txtotp'))==otp:
+            return redirect("webguest:user_registration")
+    return render(request,"Guest/UserRegistration.html")
+
+
+
+
+
+
