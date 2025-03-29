@@ -10,10 +10,7 @@
     <title>Ticket Booking</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Include custom CSS if needed -->
-    <!-- <link rel="stylesheet" href="{% static 'custom.css' %}"> -->
     <style>
-        /* Add custom CSS here if needed */
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -56,6 +53,8 @@
                 <tr>
                     <th>SL No</th>
                     <th>Date</th>
+                    <th>Service From</th>
+                    <th>Service To</th>
                     <th>Passenger Count</th>
                     <th>Amount</th>
                     <th>Ticket Type</th>
@@ -71,11 +70,12 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ item.date }}</td>
+                    <td>{{ item.service_from.start_point }}</td>
+                    <td>{{ item.service_to.end_point }}</td>
                     <td>{{ item.Passenger_count }}</td>
                     <td>{{ item.book_amount }}</td>
                     <td>{{ item.ticket_type.ticket_type }}</td>
-                    <td>bktoken  {{ item.id }}</td>
-
+                    <td>bktoken {{ item.id }}</td>
                     <td>{{ item.user.user_name }}</td>
                     <td>{{ item.user.user_contact }}</td>
                     <td>
@@ -89,11 +89,13 @@
                         {% if item.status == 0 %}
                         <span class="status-not-payed">Not Payed</span>
                         {% elif item.status == 1 %}
-                        <span class="status-payed">Payed</span> | <a href="{% url 'WebStationMaster:userboat_assign' item.id %}" class="btn btn-sm btn-primary">Assign Boat</a>
+                        <span class="status-payed">Payed</span> | 
+                        <a href="{% url 'WebStationMaster:userboat_assign' item.id %}" class="btn btn-sm btn-primary">Assign Boat</a>
                         {% elif item.status == 2 %}
                         <span class="status-assigned">Assigned</span>
                         {% elif item.status == 3 %}
-                        <span class="status-canceled">Canceled</span> | <a href="{% url 'WebStationMaster:refund' item.id %}" class="btn btn-sm btn-warning">Refund</a>
+                        <span class="status-canceled">Canceled</span> | 
+                        <a href="{% url 'WebStationMaster:refund' item.id %}" class="btn btn-sm btn-warning">Refund</a>
                         {% elif item.status == 4 %}
                         <span class="status-refunded">Refunded</span>
                         {% else %}

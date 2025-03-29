@@ -34,6 +34,8 @@ path('canceleventbooking/<int:id>',views.canceleventbooking,name='canceleventboo
 path('Review/',views.review,name='review'),
 path('ReviewLoader/',views.reviewloader,name='reviewloader'),
 
+path('schedule/', views.schedule, name='schedule'),
+
 
 
 

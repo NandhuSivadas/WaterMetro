@@ -1,87 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Registration</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            margin-top: 50px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+
+        .email-otp-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .email-otp-container input[type="text"] {
+            flex-grow: 1;
+        }
+
+        .email-otp-container input[type="button"] {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+    </style>
 </head>
+
 <body>
-    <form action="" method="post" id="UserForm" data-places-url="{% url 'webadmin:AjaxPlace' %}" enctype="multipart/form-data">
+    <form action="" method="post" id="UserForm" data-places-url="{% url 'webadmin:AjaxPlace' %}" enctype="multipart/form-data" class="form-container">
         {% csrf_token %}
-        <table align="center" border="1" cellpadding="10">
-            <h2 align="center">User registration</h2>
-            
-            <tr>
-                <td>District</td>
-                <td><select name="select" id="sel_district">
-                    <option value="">..select..</option>
-                    {% for i in Ddata %}
-                    <option value="{{i.id}}">{{i.district_name}}</option>
-                    {% endfor %}
-                </select>
-            </td>
-            </tr>
-            <tr>
-                <td>Place</td>
-                <td>
-                    <select name="sel_place" id="sel_place">
-                        <option value="">select</option>
-                        {%  for  i in data  %}
-                        <option value="{{i.id}}">{{i.Place_name}}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td><input type="text" name="txt_name" id=""></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="email" name="txt_email" id=""></td>
-            </tr>
-            <tr>
-                <td>Gender</td>
-                <td>Male<input type="radio" name="txt_gender" id="">
-                    Female<input type="radio" name="txt_gender" id=""></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input type="text" name="txt_contact" id=""></td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td><input type="text" name="txt_address" id=""></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" name="txt_password" id=""></td>
-            </tr>
-            <tr>
-                <td>Image</td>
-                <td><input type="file" name="txt_file" id=""></td>
-            </tr>
-            <tr>
-                <td>Proof</td>
-                <td><input type="file" name="txt_proof" id=""></td>
-            </tr>
-            <tr>
-                <td><input type="submit"  name="txt_submit" value="Submit">
-                    <input type="reset"  name="txt_submit" value="Cancel">
+        <h2>User Registration</h2>
 
+        <div class="form-group">
+            <label for="sel_district">District</label>
+            <select name="select" id="sel_district" class="form-control" required>
+                <option value="">..select..</option>
+                {% for i in Ddata %}
+                <option value="{{i.id}}">{{i.district_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-                </td>
-            </tr>
-        </table>
+        <div class="form-group">
+            <label for="sel_place">Place</label>
+            <select name="sel_place" id="sel_place" class="form-control" required>
+                <option value="">select</option>
+                {% for i in data %}
+                <option value="{{i.id}}">{{i.Place_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_name">Name</label>
+            <input type="text" name="txt_name" id="txt_name" class="form-control" pattern="[a-zA-Z ]{4,20}" title="Enter Correct Name" autocomplete="off" required>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_email">Email</label>
+            <div class="email-otp-container">
+                <input type="text" name="txt_email" id="txt_email" class="form-control">
+                <!-- <input type="button" value="Validate" id="validate_email_btn" class="btn btn-primary"> -->
+            </div>
+        </div>
+
+        <!-- <div class="form-group">
+            <label for="txtotp">OTP</label>
+            <div class="email-otp-container">
+                <input type="text" name="txtotp" id="txtotp" class="form-control">
+                <input type="button" value="Verify OTP" id="verify_otp_btn" class="btn btn-primary">
+            </div>
+        </div> -->
+
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="form-check">
+                <input type="radio" name="txt_gender" id="male" class="form-check-input" required>
+                <label for="male" class="form-check-label">Male</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="txt_gender" id="female" class="form-check-input">
+                <label for="female" class="form-check-label">Female</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_contact">Contact</label>
+            <input type="text" name="txt_contact" id="txt_contact" class="form-control" pattern="[0-9+
+            ]{10,13}" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+            <label for="txt_address">Address</label>
+            <input type="text" name="txt_address" id="txt_address" class="form-control" autocomplete="off" required>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_password">Password</label>
+            <input type="password" name="txt_password" id="txt_password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_file">Image</label>
+            <input type="file" name="txt_file" id="txt_file" class="form-control-file" required>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_proof">Proof</label>
+            <input type="file" name="txt_proof" id="txt_proof" class="form-control-file" required>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Cancel</button>
+        </div>
     </form>
-    
-</body>
-</html>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        $("#sel_district").change(function () {
+             $("#sel_district").change(function () {
             var did = $(this).val();
             var ur = $("#UserForm").attr("data-places-url");
             $.ajax({
@@ -92,4 +157,57 @@
                 },
             });
         });
-</script>
+
+
+
+        $(document).ready(function () {
+            // Email validation
+            $("#validate_email_btn").click(function () {
+                var email = $("#txt_email").val();
+                var csrfToken = "{{ csrf_token }}";
+
+                $.ajax({
+                    url: "{% url 'wguest:emailvalid' %}", // URL to the view
+                    method: "POST",
+                    data: {
+                        'txt_email': email,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (response) {
+                        alert("OTP sent to your email. Please check.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to send OTP. Error: " + error);
+                    }
+                });
+            });
+
+            // OTP verification
+            $("#verify_otp_btn").click(function () {
+                var otp = $("#txtotp").val();
+                var csrfToken = "{{ csrf_token }}";
+
+                $.ajax({
+                    url: "{% url 'wguest:emailverification' %}", // URL to the view
+                    method: "POST",
+                    data: {
+                        'otp': otp,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (response) {
+                        if (response.status == "success") {
+                            alert("OTP verified successfully.");
+                        } else {
+                            alert("Invalid OTP. Please try again.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to verify OTP. Error: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

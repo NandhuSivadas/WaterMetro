@@ -1,31 +1,15 @@
 {% extends 'StationMaster/Header.html' %}
 {% load static %}
 {% block content %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services</title>
-    <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Include custom CSS if needed -->
-    <!-- <link rel="stylesheet" href="{% static 'custom.css' %}"> -->
     <style>
-        /* Add custom CSS here if needed */
         body {
-            font-family: Arial, sans-serif;
             margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
         }
         th {
             background-color: #f2f2f2;
@@ -42,14 +26,19 @@
             <h2 class="text-center">Services</h2>
             <div class="row justify-content-center">
                 <div class="col-md-6">
+                    <input type="hidden" name="service_id" value="{{ udata.id|default:'' }}">
                     <table class="table">
                         <tr>
                             <td>Start Point</td>
-                            <td><input type="text" class="form-control" name="txt_startpoint" value="{{ udata.start_point }}"></td>
+                            <td><input type="text" class="form-control" name="txt_startpoint" value="{{ udata.start_point|default:'' }}"></td>
                         </tr>
                         <tr>
                             <td>End Point</td>
-                            <td><input type="text" class="form-control" name="txt_endpoint" value="{{ udata.end_point }}"></td>
+                            <td><input type="text" class="form-control" name="txt_endpoint" value="{{ udata.end_point|default:'' }}"></td>
+                        </tr>
+                        <tr>
+                            <td>Payment</td>
+                            <td><input type="text" class="form-control" name="txt_payment" value="{{ udata.payment|default:'' }}"></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="center">
@@ -64,6 +53,7 @@
                             <th>SL No</th>
                             <th>Start Point</th>
                             <th>End Point</th>
+                            <th>Payment</th>
                             <th>Actions</th>
                         </tr>
                         {% for item in Data %}
@@ -71,6 +61,7 @@
                             <td>{{ forloop.counter }}</td>
                             <td>{{ item.start_point }}</td>
                             <td>{{ item.end_point }}</td>
+                            <td>{{ item.payment }}</td>
                             <td>
                                 <a href="{% url 'WebStationMaster:del_service' item.id %}" class="btn btn-danger">Delete</a>
                                 <a href="{% url 'WebStationMaster:update_service' item.id %}" class="btn btn-primary">Update</a>

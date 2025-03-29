@@ -110,10 +110,10 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                   <li class="active">
-                    <a href="{% url 'webuser:homepage' %}" class="nav-link text-left">Home</a>
+                 
                   </li>
                   <li>
-                    <a href="{% url 'webuser:myprofile' %}" class="nav-link text-left">My Profile</a>
+                    <a href="{% url 'webuser:myprofile' %}" class="nav-link text-left">MyProfile</a>
                   </li>
                   <li>
                     <a href="{% url 'webuser:ticketbooking' %}" class="nav-link text-left">TicketBooking</a>
@@ -123,14 +123,17 @@
                   </li>
                
                 <li>
-                  <a href="{% url 'webuser:viewmyticket' %} " class="nav-link text-left">View Ticket</a>
+                  <a href="{% url 'webuser:viewmyticket' %} " class="nav-link text-left">ViewTicket</a>
               </li>
               <li>
-                <a href="{% url 'webuser:eventlist' %} " class="nav-link text-left">Event List</a>
+                <a href="{% url 'webuser:eventlist' %} " class="nav-link text-left">EventList</a>
             </li>
             <li>
-              <a href="{% url 'webuser:vieweventbooking' %} " class="nav-link text-left">Event Bookings</a>
+              <a href="{% url 'webuser:vieweventbooking' %} " class="nav-link text-left">EventBookings</a>
           </li>
+          <li>
+            <a href="{% url 'webuser:schedule' %} " class="nav-link text-left">Schedule</a>
+        </li>
           <li>
             <a href="{% url 'webuser:review' %} " class="nav-link text-left">Review</a>
         </li>

@@ -5,14 +5,27 @@ from StationMaster.models import *
 
 # Create your models here.
 
+# class tbl_ticketbooking(models.Model):
+#     date=models.DateField()
+#     Passenger_count=models.CharField(max_length=10)
+#     ticket_type=models.ForeignKey(tbl_tickettype,on_delete=models.CASCADE)
+#     book_amount=models.CharField(max_length=10)
+#     user=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
+#     assign = models.ForeignKey(tbl_assignboat,on_delete=models.CASCADE,null=True)
+#     status = models.IntegerField(default=0)
+
+
 class tbl_ticketbooking(models.Model):
-    date=models.DateField()
-    Passenger_count=models.CharField(max_length=10)
-    ticket_type=models.ForeignKey(tbl_tickettype,on_delete=models.CASCADE)
-    book_amount=models.CharField(max_length=10)
-    user=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
-    assign = models.ForeignKey(tbl_assignboat,on_delete=models.CASCADE,null=True)
+    date = models.DateField()
+    service_from = models.ForeignKey(tbl_service, on_delete=models.CASCADE, related_name="service_from")
+    service_to = models.ForeignKey(tbl_service, on_delete=models.CASCADE, related_name="service_to")
+    Passenger_count = models.CharField(max_length=10)
+    
+    book_amount = models.CharField(max_length=10)
+    user = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+    assign = models.ForeignKey(tbl_assignboat, on_delete=models.CASCADE, null=True)
     status = models.IntegerField(default=0)
+
 
 class tbl_complaint(models.Model):
     title=models.CharField(max_length=50)

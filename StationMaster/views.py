@@ -10,13 +10,7 @@ def home_page(request):
     return render(request,'StationMaster/Homepage.html',{' stationmaster': stationmaster})
 
 
-def service(request):
-    sdata=tbl_service.objects.all()
-    if request.method=="POST":
-        tbl_service.objects.create(start_point=request.POST.get("txt_startpoint"),end_point=request.POST.get("txt_endpoint"))
-        return render(request,'StationMaster/Services.html',{'Data':sdata})
-    else:
-        return render(request,'StationMaster/Services.html',{'Data':sdata})
+
     
 
 def my_profile(request):
@@ -62,22 +56,101 @@ def changepassword(request):
     else:
         return render(request,'StationMaster/ChangePassword.html')
     
+# def assignboat(request):
+#     BoatData=tbl_boat.objects.all()
+#     ServiceData=tbl_service.objects.all()
+#     assignData=tbl_assignboat.objects.all()
+#     if request.method=="POST":
+#         tbl_assignboat.objects.create(boat=tbl_boat.objects.get(id=request.POST.get("boat")),
+#                                       service=tbl_service.objects.get(id=request.POST.get("selectservice")),
+#                                       starttime=request.POST.get("txt_starttime"),
+#                                       arrivaltime=request.POST.get("txt_arrivaltime"))
+#         return render(request,'StationMaster/AssignBoat.html',{'Data':BoatData,'Sdata':ServiceData,'Adata':assignData})
+#     else:
+#         return render(request,'StationMaster/AssignBoat.html',{'Data':BoatData,'Sdata':ServiceData,'Adata':assignData})
+
 def assignboat(request):
-    BoatData=tbl_boat.objects.all()
-    ServiceData=tbl_service.objects.all()
-    assignData=tbl_assignboat.objects.all()
-    if request.method=="POST":
-        tbl_assignboat.objects.create(boat=tbl_boat.objects.get(id=request.POST.get("boat")),
-                                      service=tbl_service.objects.get(id=request.POST.get("selectservice")),
-                                      starttime=request.POST.get("txt_starttime"),
-                                      arrivaltime=request.POST.get("txt_arrivaltime"))
-        return render(request,'StationMaster/AssignBoat.html',{'Data':BoatData,'Sdata':ServiceData,'Adata':assignData})
+    BoatData = tbl_boat.objects.all()
+    ServiceData = tbl_service.objects.all()
+    assignData = tbl_assignboat.objects.all()
+
+    if request.method == "POST":
+        tbl_assignboat.objects.create(
+            boat=tbl_boat.objects.get(id=request.POST.get("boat")),
+            service=tbl_service.objects.get(id=request.POST.get("selectservice")),
+            starttime=request.POST.get("txt_starttime"),
+            arrivaltime=request.POST.get("txt_arrivaltime")
+        )
+        return render(request, 'StationMaster/AssignBoat.html', {
+            'Data': BoatData, 
+            'Sdata': ServiceData, 
+            'Adata': assignData
+        })
     else:
-        return render(request,'StationMaster/AssignBoat.html',{'Data':BoatData,'Sdata':ServiceData,'Adata':assignData})
+        return render(request, 'StationMaster/AssignBoat.html', {
+            'Data': BoatData, 
+            'Sdata': ServiceData, 
+            'Adata': assignData
+        })
+
+# def service(request):
+#     sdata=tbl_service.objects.all()
+#     if request.method=="POST":
+#         tbl_service.objects.create(start_point=request.POST.get("txt_startpoint"),end_point=request.POST.get("txt_endpoint"))
+#         return render(request,'StationMaster/Services.html',{'Data':sdata})
+#     else:
+#         return render(request,'StationMaster/Services.html',{'Data':sdata})
  
+# def del_service(request,did):
+#     tbl_service.objects.get(id=did).delete()
+#     return redirect('WebStationMaster:service')
+
+# def update_service(request, did):
+#     updata = tbl_service.objects.get(id=did)
+
+#     if request.method == "POST":
+#         updata.start_point = request.POST.get("txt_startpoint")
+#         updata.end_point = request.POST.get("txt_endpoint")
+#         updata.save()
+#         return redirect('WebStationMaster:service')
+#     else:
+#         return render(request, 'StationMaster/Services.html', {'udata':updata})
+
+
+from django.shortcuts import render, redirect
+from .models import tbl_service
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .models import tbl_service
+
+# Service View (Add & List)
+def service(request):
+    udata = None
+    if request.method == "POST":
+        start = request.POST.get("txt_startpoint")
+        end = request.POST.get("txt_endpoint")
+        payment = request.POST.get("txt_payment")
+
+        service_id = request.POST.get("service_id")
+        if service_id:  # Update existing
+            service_obj = tbl_service.objects.get(id=service_id)
+            service_obj.start_point = start
+            service_obj.end_point = end
+            service_obj.payment = payment
+            service_obj.save()
+        else:  # Add new
+            tbl_service.objects.create(start_point=start, end_point=end, payment=payment)
+
+        return redirect('WebStationMaster:service')
+
+    data = tbl_service.objects.all()
+    return render(request, 'StationMaster/Services.html', {'Data': data, 'udata': udata})
+
+# Delete Service
 def del_service(request,did):
     tbl_service.objects.get(id=did).delete()
     return redirect('WebStationMaster:service')
+
 
 def update_service(request, did):
     updata = tbl_service.objects.get(id=did)
@@ -89,6 +162,9 @@ def update_service(request, did):
         return redirect('WebStationMaster:service')
     else:
         return render(request, 'StationMaster/Services.html', {'udata':updata})
+
+
+
     
 def del_assignboat(request,did):
     tbl_assignboat.objects.get(id=did).delete()

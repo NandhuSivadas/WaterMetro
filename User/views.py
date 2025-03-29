@@ -5,6 +5,7 @@ from django.contrib import messages
 from User.models import *
 from Admin.models import *
 from Guest.models import *
+from datetime import datetime
 
 
 
@@ -54,19 +55,68 @@ def change_password(request):
     else:
         return render(request,'User/ChangePassword.html')
 
-def ticketbooking(request):
-    user=tbl_user.objects.get(id=request.session['uid'])
-    TicketData=tbl_tickettype.objects.all()
-    if request.method=="POST":
-        tbl_ticketbooking.objects.create(date=request.POST.get("txt_date"),
-                                      ticket_type=tbl_tickettype.objects.get(id=request.POST.get("txt_tickettype")),
-                                      Passenger_count=request.POST.get("txt_number"),
-                                      book_amount=request.POST.get("txt_amount"),
-                                      user=user)
+# def ticketbooking(request):
+#     user=tbl_user.objects.get(id=request.session['uid'])
+#     TicketData=tbl_tickettype.objects.all()
+#     if request.method=="POST":
+#         tbl_ticketbooking.objects.create(date=request.POST.get("txt_date"),
+#                                       ticket_type=tbl_tickettype.objects.get(id=request.POST.get("txt_tickettype")),
+#                                       Passenger_count=request.POST.get("txt_number"),
+#                                       book_amount=request.POST.get("txt_amount"),
+#                                       user=user)
         
-        return render(request,'User/TicketBooking.html')
-    else:
-        return render(request,'User/TicketBooking.html',{'Data':TicketData,'user':user})
+#         return render(request,'User/TicketBooking.html')
+#     else:
+#         return render(request,'User/TicketBooking.html',{'Data':TicketData,'user':user})
+
+# def ticketbooking(request):
+#     user = tbl_user.objects.get(id=request.session['uid'])
+#     TicketData = tbl_tickettype.objects.all()
+#     ServiceData = tbl_service.objects.all()  # Fetch service points
+    
+#     if request.method == "POST":
+#         tbl_ticketbooking.objects.create(
+#             date=request.POST.get("txt_date"),
+#             service_from=tbl_service.objects.get(id=request.POST.get("txt_service_from")),
+#             service_to=tbl_service.objects.get(id=request.POST.get("txt_service_to")),
+#             ticket_type=tbl_tickettype.objects.get(id=request.POST.get("txt_tickettype")),
+#             Passenger_count=request.POST.get("txt_number"),
+#             book_amount=request.POST.get("txt_amount"),
+#             user=user
+#         )
+#         return render(request, 'User/TicketBooking.html', {'Data': TicketData, 'ServiceData': ServiceData, 'user': user})
+#     else:
+#         return render(request, 'User/TicketBooking.html', {'Data': TicketData, 'ServiceData': ServiceData, 'user': user})
+
+
+
+
+def ticketbooking(request):
+    user = tbl_user.objects.get(id=request.session['uid'])
+    ServiceData = tbl_service.objects.all()
+    
+    if request.method == "POST":
+        service_from = tbl_service.objects.get(id=request.POST.get("txt_service_from"))
+        service_to = tbl_service.objects.get(id=request.POST.get("txt_service_to"))
+        passenger_count = int(request.POST.get("txt_number"))
+
+        # Fetch payment and calculate booking amount
+        book_amount = service_from.payment * passenger_count
+
+        tbl_ticketbooking.objects.create(
+            date=request.POST.get("txt_date"),
+            service_from=service_from,
+            service_to=service_to,
+            Passenger_count=passenger_count,
+            book_amount=book_amount,
+            user=user
+        )
+
+        messages.success(request, "Ticket Booked Successfully")
+        return redirect('webuser:ticketbooking')
+    
+    return render(request, 'User/TicketBooking.html', {'ServiceData': ServiceData, 'user': user})
+
     
 def ajaxrate(request):
     if request.GET.get("count") != "":
@@ -76,6 +126,10 @@ def ajaxrate(request):
         return render(request,"User/Ajaxrate.html",{"rate":tot})
     else:
         return render(request,"User/Ajaxrate.html",{"rate":0})
+
+
+
+
     
 def complaint(request):
     user=tbl_user.objects.get(id=request.session['uid'])
@@ -269,3 +323,9 @@ def review(request):
    
 def reviewloader(request):
    return render(request,'User/ReviewLoader.html')
+
+def schedule(request):
+    scheduleData = tbl_assignboat.objects.all().order_by('starttime')
+    return render(request, 'User/Schedule.html', {'ScheduleData': scheduleData})
+
+
